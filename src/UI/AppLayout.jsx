@@ -6,7 +6,7 @@ function AppLayout() {
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header />
-      <main className="overflow-y-scroll">
+      <main>
         <Outlet />
       </main>
       <Footer />
