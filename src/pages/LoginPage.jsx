@@ -2,10 +2,22 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import InputElement from "../utils/InputElement";
+import useMutationFunc from "../services/useMutation";
+import { LoginFormSubmission } from "../services/FormSubmitAPI";
 
 function LoginPage() {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
+
+  const mutate = useMutationFunc(
+    LoginFormSubmission,
+    "Login Successfull",
+    "Login Failed",
+  );
+  
+  function onSubmit(data) {
+    mutate(data);
+  }
 
   return (
     <main className="grid min-h-[100dvh] grid-cols-1 sm:h-screen sm:grid-cols-[1fr_1fr]">
@@ -23,7 +35,7 @@ function LoginPage() {
           <h1 className="mb-7 text-center text-5xl font-semibold text-sky-800 sm:mb-16 sm:text-8xl">
             Quick-Quack
           </h1>
-          <form onSubmit={handleSubmit()}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-7 sm:gap-12">
               <InputElement
                 label="Email"
@@ -41,7 +53,7 @@ function LoginPage() {
                 register={register}
                 errors={errors}
               />
-              <button className="rounded-xl bg-sky-300 p-3 text-2xl font-semibold tracking-wide text-slate-800 focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-4xl">
+              <button className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold tracking-wide text-slate-800 transition-colors hover:bg-sky-500 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-4xl">
                 Login
               </button>
               <Link
