@@ -1,9 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import Form from "../UI/Form";
+import useMutationFunc from "../services/useMutation";
+import { SignUpFormSubmission } from "../services/FormSubmitAPI";
 
 function SignupPage() {
+  const navigate = useNavigate();
+  const [mutate, , isSuccess] = useMutationFunc(
+    SignUpFormSubmission,
+    "Sign Up successfull",
+    "Signing up failed",
+  );
+
   return (
     <div className="grid min-h-[100dvh] grid-cols-1 place-items-center bg-sky-200 p-4 sm:h-screen sm:grid-cols-[1fr_1fr]">
+      {isSuccess ? navigate("/feed") : ""}
       <div className="hidden sm:block">
         <img
           src="SIGNUP_IMG.PNG"
@@ -16,7 +27,7 @@ function SignupPage() {
           <h1 className="mb-10 text-center text-6xl font-semibold tracking-wide text-sky-600 sm:text-7xl">
             SignUp
           </h1>
-          <Form />
+          <Form mutate={mutate} />
           <div className="mt-2 flex items-center justify-center text-[1.7rem] font-bold tracking-wide">
             <Link
               to={"/login"}

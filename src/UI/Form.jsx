@@ -1,10 +1,8 @@
 import { useForm } from "react-hook-form";
-import useMutationFunc from "../services/useMutation";
 
-import { SignUpFormSubmission } from "../services/FormSubmitAPI";
 import { inputStyle, errorStyle, signUpButton } from "../utils/Styles";
 
-function Form() {
+function Form({ mutate }) {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
@@ -13,15 +11,12 @@ function Form() {
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
-  const mutate = useMutationFunc(
-    SignUpFormSubmission,
-    "Sign Up successfull",
-    "Signing up failed",
-  );
-
   function onSubmit(data) {
-    const DOB = `${data.year}-${data.month}-${data.day}`;
-    data.DOB = new Date(DOB);
+    if (data.year && data.month && data.day) {
+      const dateOfBirth = `${data.year}-${data.month}-${data.day}`;
+      data.dateOfBirth = new Date(dateOfBirth).toLocaleString();
+      return mutate(data);
+    }
     mutate(data);
   }
 
@@ -29,34 +24,31 @@ function Form() {
     <form className="grid grid-cols-2 gap-2" onSubmit={handleSubmit(onSubmit)}>
       {/* {First Name} */}
       <input
-        id="firstname"
         type="text"
         placeholder={
-          errors?.firstname?.message
-            ? "!" + errors?.firstname?.message
+          errors?.firstName?.message
+            ? "!" + errors?.firstName?.message
             : "First Name"
         }
-        className={`${errors?.firstname ? errorStyle : inputStyle}`}
-        {...register("firstname", { required: "First name is required" })}
+        className={`${errors?.firstName ? errorStyle : inputStyle}`}
+        {...register("firstName", { required: "First name is required" })}
       />
 
       {/* {Last Name} */}
       <input
-        id="lastname"
         type="text"
         placeholder={
-          errors?.lastname?.message
-            ? "!" + errors?.lastname?.message
+          errors?.lastName?.message
+            ? "!" + errors?.lastName?.message
             : "Last Name"
         }
-        className={`${errors?.lastname ? errorStyle : inputStyle}`}
-        {...register("lastname", { required: "Last name is required" })}
+        className={`${errors?.lastName ? errorStyle : inputStyle}`}
+        {...register("lastName", { required: "Last name is required" })}
       />
 
       {/* {Username} */}
       <input
         type="text"
-        id="username"
         placeholder={
           errors?.username?.message
             ? "!" + errors?.username?.message
@@ -77,7 +69,6 @@ function Form() {
 
       {/* {Email} */}
       <input
-        id="email"
         type="email"
         placeholder={
           errors?.email?.message
@@ -96,7 +87,6 @@ function Form() {
 
       {/* {Password} */}
       <input
-        id="password"
         type="password"
         placeholder={
           errors?.password?.message

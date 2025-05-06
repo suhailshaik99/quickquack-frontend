@@ -1,12 +1,20 @@
+import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 
 function useMutationFunc(apiFunc, successMessage, errorMessage) {
-  const { mutate } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: apiFunc,
-    onSuccess: () => console.log(successMessage),
-    onError: () => console.log(errorMessage),
+    onSuccess: () => {
+      toast.success(successMessage, {
+        id: "success-message",
+      });
+    },
+    onError: (error) =>
+      toast.error(error.message || errorMessage, {
+        id: "auth-error",
+      }),
   });
-  return mutate;
+  return [mutate, isPending, isSuccess];
 }
 
 export default useMutationFunc;

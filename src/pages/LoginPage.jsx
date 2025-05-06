@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 
 import InputElement from "../utils/InputElement";
 import useMutationFunc from "../services/useMutation";
@@ -9,18 +9,21 @@ function LoginPage() {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
-  const mutate = useMutationFunc(
+  const navigate = useNavigate();
+
+  const [mutate, isPending, isSuccess] = useMutationFunc(
     LoginFormSubmission,
     "Login Successfull",
     "Login Failed",
   );
-  
+
   function onSubmit(data) {
     mutate(data);
-  }
+  };
 
   return (
     <main className="grid min-h-[100dvh] grid-cols-1 sm:h-screen sm:grid-cols-[1fr_1fr]">
+      {isSuccess ? navigate("/feed") : ""}
       <div className="hidden bg-sky-300 sm:flex sm:items-center sm:justify-center">
         <div>
           <img
@@ -45,6 +48,7 @@ function LoginPage() {
                 register={register}
                 errors={errors}
               />
+              
               <InputElement
                 label="Password"
                 type="password"
@@ -53,11 +57,11 @@ function LoginPage() {
                 register={register}
                 errors={errors}
               />
-              <button className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold tracking-wide text-slate-800 transition-colors hover:bg-sky-500 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-4xl">
-                Login
+              <button className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold tracking-wide text-slate-800 transition-colors hover:bg-sky-500 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-4xl disabled:cursor-not-allowed" disabled={isPending}>
+                {isPending ? "Loging In..." : "Login"}
               </button>
               <Link
-                to={"/"}
+                to={"/forgot-password"}
                 className="text-center text-2xl font-semibold hover:text-sky-300 hover:underline focus:rounded-md focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2"
               >
                 Forgotten your password?

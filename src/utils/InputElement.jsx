@@ -12,18 +12,13 @@ function InputElement({ label, type, id, placeholder, register, errors }) {
   return (
     <label className="flex flex-col gap-2 text-2xl font-semibold text-sky-600 sm:gap-5 sm:text-4xl">
       {label}{" "}
-      {/* {errors?.[id]?.message && (
-        <span className="text-[1rem] tracking-wider text-red-600">
-          {errors?.[id].message}
-        </span>
-      )} */}
       <input
         type={type === "password" && showPassword ? "text" : type}
         placeholder={errors?.[id] ? errors?.[id].message : placeholder}
         className={errors?.[id] ? errorElementStyle : inputElementStyle}
         {...register(`${id}`, { required: `${id} is required` })}
       />
-      {id == "password" &&
+      {(id == "password" || id == "confirmPassword") &&
         (showPassword ? EyeOpen(setShowPassword) : EyeClosed(setShowPassword))}
     </label>
   );
