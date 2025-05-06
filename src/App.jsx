@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import Home from "./pages/Home";
 import AppLayout from "./UI/AppLayout";
 import FeedPage from "./pages/FeedPage";
 import LoginPage from "./pages/LoginPage";
+import Home from "./pages/AppOverviewPage";
 import SignupPage from "./pages/SignupPage";
 import PageNotFound from "./pages/PageNotFound";
-import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./pages/ForgotPasswordPage";
 
 function App() {
   const queryClient = new QueryClient();

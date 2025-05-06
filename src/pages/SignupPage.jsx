@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import Form from "../UI/Form";
+import Form from "../UI/SignUpForm";
 import useMutationFunc from "../services/useMutation";
 import { SignUpFormSubmission } from "../services/FormSubmitAPI";
 

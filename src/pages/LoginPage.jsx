@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
-import InputElement from "../utils/InputElement";
+import InputElement from "../UI/InputElement";
 import useMutationFunc from "../services/useMutation";
 import { LoginFormSubmission } from "../services/FormSubmitAPI";
 

@@ -16,6 +16,7 @@ async function SignUpFormSubmission(data) {
 }
 
 async function LoginFormSubmission(data) {
+  console.log(import.meta.VITE_SIGNUP_URL);
   try {
     const response = await axios.post(import.meta.env.VITE_LOGIN_URL, data, {
       withCredentials: true,
@@ -49,7 +50,10 @@ async function ChangePasswordSubmission(data) {
 
 async function sendOTPSubmission(data) {
   try {
-    const response = await axios.post(import.meta.env.VITE_REQUEST_OTP_URL, data);
+    const response = await axios.post(
+      import.meta.env.VITE_REQUEST_OTP_URL,
+      data,
+    );
     if (!response.data.success) {
       throw new Error(response.data.message || "OTP Sending Failed...");
     }
