@@ -1,11 +1,19 @@
-function FeedPage () {
-    return (
-        <div>
-            <h1>Welcome to the Feed Page</h1>
-            <p>Here is where your feed content will appear.</p>
-            <p>This is an authorized page</p>
-        </div>
-    );
-};
+import Post from "../features/Posts/Post";
+import FeedStories from "../features/Stories/FeedStories";
+
+function FeedPage() {
+  return (
+    <div className="mt-4 flex flex-col gap-5">
+      <FeedStories />
+      <div className="flex flex-col items-center gap-2 divide-y">
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </div>
+    </div>
+  );
+}
 
 export default FeedPage;

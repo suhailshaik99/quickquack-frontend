@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import Form from "../UI/SignUpForm";
@@ -12,9 +13,15 @@ function SignupPage() {
     "Signing up failed",
   );
 
+  useEffect(
+    function () {
+      isSuccess ? navigate("/feed") : "";
+    },
+    [isSuccess, navigate],
+  );
+  
   return (
     <div className="grid min-h-[100dvh] grid-cols-1 place-items-center bg-sky-200 p-4 sm:h-screen sm:grid-cols-[1fr_1fr]">
-      {isSuccess ? navigate("/feed") : ""}
       <div className="hidden sm:block">
         <img
           src="SIGNUP_IMG.PNG"

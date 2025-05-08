@@ -16,7 +16,6 @@ async function SignUpFormSubmission(data) {
 }
 
 async function LoginFormSubmission(data) {
-  console.log(import.meta.VITE_SIGNUP_URL);
   try {
     const response = await axios.post(import.meta.env.VITE_LOGIN_URL, data, {
       withCredentials: true,

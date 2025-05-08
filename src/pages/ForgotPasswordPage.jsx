@@ -7,6 +7,7 @@ import {
   ChangePasswordSubmission,
   sendOTPSubmission,
 } from "../services/FormSubmitAPI";
+import { useEffect } from "react";
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -42,9 +43,15 @@ function ForgotPassword() {
     mutateChangePassword(data);
   }
 
+  useEffect(
+    function () {
+      isSuccess ? navigate("/login") : "";
+    },
+    [isSuccess, navigate],
+  );
+
   return (
     <main className="grid min-h-[100dvh] grid-cols-1 sm:h-screen sm:grid-cols-[1fr_1fr]">
-      {isSuccess ? navigate("/login") : ""}
       <div className="hidden bg-sky-300 sm:flex sm:items-center sm:justify-center">
         <div>
           <img
@@ -71,7 +78,7 @@ function ForgotPassword() {
               />
               <button
                 type="submit"
-                className="disabled:cursor-not-allowed rounded-2xl bg-sky-900 p-4 text-2xl font-semibold text-white focus:outline-none focus:ring focus:ring-sky-900 focus:ring-offset-2 sm:text-2xl"
+                className="rounded-2xl bg-sky-900 p-4 text-2xl font-semibold text-white focus:outline-none focus:ring focus:ring-sky-900 focus:ring-offset-2 disabled:cursor-not-allowed sm:text-2xl"
                 disabled={isSendingEmail}
               >
                 {isSendingEmail ? "Sending OTP..." : "Request OTP"}
