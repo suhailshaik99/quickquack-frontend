@@ -1,9 +1,15 @@
+// Library Imports
+import { useDispatch } from "react-redux";
+
+// Local Imports
 import { FaSearch } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { IoSettings } from "react-icons/io5";
+import { openBox } from "../Posts/postSlice";
 import { FaSignOutAlt } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
+import { AiFillPlusCircle } from "react-icons/ai";
 import { IoMdNotifications } from "react-icons/io";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
 
@@ -15,9 +21,14 @@ function NavlinkItem({ children }) {
   );
 }
 
+function handleClick(dispatch) {
+  dispatch(openBox());
+}
+
 function FeedNavigation() {
+  const dispatch = useDispatch();
   return (
-    <ul className="flex flex-col gap-4 p-4 text-[2rem] font-semibold text-slate-900">
+    <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
       <NavLink to="/" className="">
         <NavlinkItem>
           <AiFillHome />
@@ -46,6 +57,12 @@ function FeedNavigation() {
         <NavlinkItem>
           <IoMdNotifications />
           <span>Notifications</span>
+        </NavlinkItem>
+      </NavLink>
+      <NavLink onClick={() => handleClick(dispatch)}>
+        <NavlinkItem>
+          <AiFillPlusCircle />
+          <span>Create Post</span>
         </NavlinkItem>
       </NavLink>
       <NavLink to="/settings">

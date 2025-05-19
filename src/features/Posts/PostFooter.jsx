@@ -1,9 +1,14 @@
+// Library Imports
 import { FaRegHeart } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa6";
 import { BiCollection } from "react-icons/bi";
 import { TbLocationShare } from "react-icons/tb";
 import { FaRegCommentAlt } from "react-icons/fa";
 
-function SpanElement({ children, handleClick }) {
+// Local Imports
+import { useLikePost, useUnlikePost } from "./useLikePost";
+
+function SpanElement({ children, handleClick = undefined }) {
   return (
     <span className="hover:cursor-pointer" onClick={handleClick}>
       {children}
@@ -11,12 +16,27 @@ function SpanElement({ children, handleClick }) {
   );
 }
 
-function PostFooter({ handleOpenCommentBox }) {
+function handleLike(postId, handleLike) {
+  handleLike(postId);
+}
+
+function PostFooter({ handleOpenCommentBox, postId, isLikedByUser }) {
+  const { mutate: likeFn } = useLikePost();
+  const { mutate: unLikeFn } = useUnlikePost();
   return (
-    <div className="flex justify-between pb-3">
+    <div className="flex justify-between">
       <div className="flex items-center gap-8">
-        <SpanElement>
-          <FaRegHeart size={24} />
+        <SpanElement
+          handleClick={() =>
+            handleLike(postId, isLikedByUser ? unLikeFn : likeFn)
+          }
+        >
+          {isLikedByUser ? (
+            <FaHeart size={24} fill="red" />
+          ) : (
+            // <FaRegHeart size={24} fill="red" />
+            <FaRegHeart size={24} />
+          )}
         </SpanElement>
         <SpanElement handleClick={handleOpenCommentBox}>
           <FaRegCommentAlt size={21} />

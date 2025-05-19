@@ -1,5 +1,7 @@
 // Library Imports
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -17,10 +19,21 @@ import Settings from "./features/Feed/Settings";
 import MessagesPage from "./pages/MessagesPage";
 import ForgotPassword from "./pages/ForgotPasswordPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import { verifyUserAuthentication } from "./services/FormSubmitAPI";
+
+const queryClient = new QueryClient();
 
 function App() {
-  const isAuth = true;
-  const queryClient = new QueryClient();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(
+    function () {
+      dispatch(verifyUserAuthentication());
+    },
+    [dispatch],
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
@@ -46,8 +59,7 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
-          {/* <Route index element={<Home />} /> */}
-          <Route path="/" element={isAuth ? <AppLayout /> : <Home />}>
+          <Route element={isAuthenticated ? <AppLayout /> : <Home />}>
             <Route path="/" element={<FeedPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="search" element={<SearchPage />} />

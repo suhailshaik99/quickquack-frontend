@@ -13,9 +13,13 @@ html {
 }
 
 body {
-  font-family: "Inter" sans-serif;
+  font-family: "Noto Sans", sans-serif;
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.logo {
+  font-family: "Cedarville Cursive";
 }

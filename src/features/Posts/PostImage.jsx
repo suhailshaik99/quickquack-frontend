@@ -1,10 +1,10 @@
-function PostImage() {
+function PostImage({ postUrl }) {
   return (
-    <div className="mb-4 aspect-square h-[55rem] w-full flex-grow overflow-hidden">
+    <div className="mb-4 aspect-square h-[55rem] w-full flex-grow overflow-hidden rounded-xl border-2 border-slate-200">
       <img
-        src="TEST_ASSET_2.jpg"
+        src={postUrl}
         alt="user_post"
-        className="h-full w-full rounded-lg object-cover"
+        className="h-full w-full rounded-lg object-contain"
       />
     </div>
   );

@@ -1,10 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import InputElement from "../UI/InputElement";
 import useMutationFunc from "../services/useMutation";
 import { LoginFormSubmission } from "../services/FormSubmitAPI";
-import { useEffect } from "react";
 
 function LoginPage() {
   const { register, handleSubmit, formState } = useForm();
@@ -16,6 +16,7 @@ function LoginPage() {
     LoginFormSubmission,
     "Login Successfull",
     "Login Failed",
+    true,
   );
 
   function onSubmit(data) {
@@ -24,7 +25,7 @@ function LoginPage() {
 
   useEffect(
     function () {
-      isSuccess ? navigate("/feed") : "";
+      isSuccess ? navigate("/") : "";
     },
     [isSuccess, navigate],
   );
@@ -65,7 +66,7 @@ function LoginPage() {
                 errors={errors}
               />
               <button
-                className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold tracking-wide text-slate-800 transition-colors hover:bg-sky-500 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 disabled:cursor-not-allowed sm:text-4xl"
+                className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold tracking-wide text-slate-800 transition-colors hover:bg-sky-500 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 disabled:cursor-not-allowed sm:text-3xl"
                 disabled={isPending}
               >
                 {isPending ? "Loging In..." : "Login"}

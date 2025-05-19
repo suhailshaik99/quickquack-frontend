@@ -1,0 +1,20 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 70 64"
+  width="100"
+  height="100"
+  fill="none"
+  stroke="black"
+  stroke-width="0.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Back image (photo icon with mountain and sun) -->
+  <rect x="10" y="12" width="36" height="28" rx="2" ry="2" fill="#e0f2fe" />
+  <circle cx="16" cy="18" r="2" />
+  <polyline points="14,30 22,22 30,30" />
+
+  <!-- Front image (upload/media icon with play button) -->
+  <rect x="27" y="18" width="36" height="28" rx="2" ry="2" fill="#e0f2fe" />
+  <polygon points="36,26 46,32 36,38" />
+</svg>

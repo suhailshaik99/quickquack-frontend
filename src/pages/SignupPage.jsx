@@ -15,11 +15,11 @@ function SignupPage() {
 
   useEffect(
     function () {
-      isSuccess ? navigate("/feed") : "";
+      isSuccess ? navigate("/login") : "";
     },
     [isSuccess, navigate],
   );
-  
+
   return (
     <div className="grid min-h-[100dvh] grid-cols-1 place-items-center bg-sky-200 p-4 sm:h-screen sm:grid-cols-[1fr_1fr]">
       <div className="hidden sm:block">
