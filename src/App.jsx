@@ -18,6 +18,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Settings from "./features/Feed/Settings";
 import MessagesPage from "./pages/MessagesPage";
 import ForgotPassword from "./pages/ForgotPasswordPage";
+import UsersProfilePage from "./pages/UsersProfilePage";
 import NotificationsPage from "./pages/NotificationsPage";
 import { verifyUserAuthentication } from "./services/FormSubmitAPI";
 
@@ -64,6 +65,7 @@ function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile/:username" element={<UsersProfilePage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
           </Route>

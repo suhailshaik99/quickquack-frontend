@@ -34,7 +34,6 @@ function PostFooter({ handleOpenCommentBox, postId, isLikedByUser }) {
           {isLikedByUser ? (
             <FaHeart size={24} fill="red" />
           ) : (
-            // <FaRegHeart size={24} fill="red" />
             <FaRegHeart size={24} />
           )}
         </SpanElement>

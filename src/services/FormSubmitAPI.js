@@ -103,13 +103,13 @@ async function getPosts() {
     });
     if (!response.data.success) {
       throw new Error(
-        response.data.message || "Unable fetch posts at the moment",
+        response.data.message || "Unable to fetch posts at the moment",
       );
     }
     return response.data.posts;
   } catch (error) {
     const errorMessage =
-      error?.response?.data?.message || "Unable fetch posts at the moment";
+      error?.response?.data?.message || "Unable to fetch posts at the moment";
     throw new Error(errorMessage);
   }
 }
@@ -179,15 +179,126 @@ async function createUnlike(postId) {
   }
 }
 
+async function createComment({ postId, data }) {
+  const postCommentUrl = import.meta.env.VITE_POST_COMMENT_URL.replace(
+    ":postId",
+    postId,
+  );
+  try {
+    const response = await axios.post(postCommentUrl, data, {
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Error posting the comment...");
+    }
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+    const errorMessage =
+      error?.response?.data?.message || "Error posting the comment...";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getComments({ queryKey }) {
+  const [, postId] = queryKey[0];
+  const getCommentsUrl = import.meta.env.VITE_GET_COMMENTS_URL.replace(
+    ":postId",
+    postId,
+  );
+  try {
+    const response = await axios.get(getCommentsUrl, { withCredentials: true });
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to fetch comments at the moment..",
+      );
+    }
+    return response.data.comments;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to fetch comments at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getUserProfileDetails({ queryKey }) {
+  const [, username] = queryKey[0];
+  const getUserProfileDetailsUrl =
+    import.meta.env.VITE_GET_USER_PROFILE_DETAILS.replace(
+      ":username",
+      username,
+    );
+  try {
+    const response = await axios.get(getUserProfileDetailsUrl, {
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to fetch the profile at the moment",
+      );
+    }
+    return response.data.userDetails;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to fetch the profile at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getProfileDetails() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_GET_PROFILE_DETAILS_URL,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Cannot load profile at the moment..",
+      );
+    }
+    return response.data.profileDetails;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Cannot load profile at the moment..";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getSuggestedFriends() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_GET_SUGGESTED_FRIENDS,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "No Friends yet on this application",
+      );
+    }
+    return response.data.suggestedFriends;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Unable to fetch people at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
 export {
   getPosts,
   createPost,
   createLike,
+  getComments,
   createUnlike,
+  createComment,
   authenticateUser,
+  getProfileDetails,
   sendOTPSubmission,
+  getSuggestedFriends,
   LoginFormSubmission,
   SignUpFormSubmission,
+  getUserProfileDetails,
   verifyUserAuthentication,
   ChangePasswordSubmission,
 };

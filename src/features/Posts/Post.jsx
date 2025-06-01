@@ -8,19 +8,33 @@ import CommentBox from "../Comments/CommentBox";
 
 function Post({ post }) {
   const [openCommentBox, setOpenCommentBox] = useState(false);
-  const { postUrl, description, likes, isLikedByUser } = post;
+  const { postUrl, description, likes, comments, isLikedByUser } = post;
 
   function handleOpenCommentBox() {
     setOpenCommentBox((prev) => !prev);
   }
-
+  // w-[48rem]
   return (
-    <div className="mt-3 flex h-auto w-[48rem] flex-col pt-4">
+    <div className="mt-3 flex h-auto w-[41rem] flex-col justify-center px-2 pt-4 sm:w-[48rem]">
       <PostHeader />
-      <PostImage postUrl={postUrl}/>
-      <PostFooter handleOpenCommentBox={handleOpenCommentBox} postId={post._id} isLikedByUser={isLikedByUser} />
-      <PostDescription description={description} likes={likes} />
-      {openCommentBox && <CommentBox />}
+      <PostImage postUrl={postUrl} />
+      <PostFooter
+        handleOpenCommentBox={handleOpenCommentBox}
+        postId={post._id}
+        isLikedByUser={isLikedByUser}
+      />
+      <PostDescription
+        description={description}
+        likes={likes}
+        comments={comments}
+        postId={post._id}
+      />
+      {openCommentBox && (
+        <CommentBox
+          postId={post._id}
+          handleOpenCommentBox={handleOpenCommentBox}
+        />
+      )}
     </div>
   );
 }

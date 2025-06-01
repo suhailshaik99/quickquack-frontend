@@ -1,14 +1,16 @@
 import { useSelector } from "react-redux";
 
 function PostHeader() {
-  const { username } = useSelector((state) => state.user.userDetails);
+  const { username, profilePicture } = useSelector(
+    (state) => state.user.userDetails,
+  );
   return (
     <div className="mb-3 flex items-center gap-4">
       <div className="h-[4rem] w-[4rem] overflow-hidden rounded-[50%] border-2">
         <img
-          src="DEFAULT_PROFILE.png"
+          src={profilePicture || "DEFAULT_PROFILE.png"}
           alt="user_profile"
-          className="h-full w-full"
+          className="h-full w-full object-cover"
         />
       </div>
       <p className="text-2xl font-semibold">{username || "Username of user"}</p>

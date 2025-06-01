@@ -27,6 +27,7 @@ function handleClick(dispatch) {
 
 function FeedNavigation() {
   const dispatch = useDispatch();
+
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
       <NavLink to="/" className="">
@@ -35,7 +36,7 @@ function FeedNavigation() {
           <span className="">Home</span>
         </NavlinkItem>
       </NavLink>
-      <NavLink to="/profile">
+      <NavLink to={`/profile`}>
         <NavlinkItem>
           <FaCircleUser />
           <span>Profile</span>

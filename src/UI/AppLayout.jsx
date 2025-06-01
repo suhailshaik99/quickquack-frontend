@@ -6,21 +6,26 @@ import { useSelector } from "react-redux";
 import FeedAside from "../features/Feed/FeedAside";
 import CreatePost from "../features/Posts/CreatePost";
 import useAuth from "../features/Authentication/useAuth";
+import CommentsList from "../features/Comments/CommentsList";
+import SuggestedUsersBox from "../features/Feed/SuggestedUsersBox";
 
 function AppLayout() {
-  const { openPostBox } = useSelector((state) => state.post);
+  const { openPostBox, openCommentsList } = useSelector((state) => state.post);
   useAuth();
 
   return (
-    <div className="relative grid h-screen grid-cols-1 divide-x overflow-hidden bg-sky-50 sm:grid-cols-[1fr_4fr_2fr]">
+    <div className="relative grid h-screen grid-cols-1 divide-x overflow-hidden bg-sky-50 sm:grid-cols-[auto_1fr] lg:grid-cols-[auto_5fr_3fr]">
       {openPostBox && <CreatePost />}
+      {openCommentsList && <CommentsList />}
       <FeedAside />
-      <main className="h-full overflow-y-auto px-4">
-        <div className="h-full overflow-y-auto px-4">
+      <main className="flex h-full flex-shrink-0 justify-center overflow-y-auto">
+        <div className="flex h-full overflow-y-auto">
           <Outlet />
         </div>
       </main>
-      <section className="hidden border-2">Hello World</section>
+      <section className="hidden place-items-center px-3 lg:grid">
+        <SuggestedUsersBox />
+      </section>
     </div>
   );
 }

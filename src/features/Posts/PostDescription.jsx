@@ -1,7 +1,15 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-function PostDescription({ description, likes, comments }) {
+import { openCommentsListBox, setPostId } from "./postSlice";
+
+function PostDescription({ description, likes, comments, postId }) {
+  const dispatch = useDispatch();
   const { username } = useSelector((state) => state.user.userDetails);
+
+  function handleOpenCommentsList() {
+    dispatch(setPostId(postId));
+    dispatch(openCommentsListBox());
+  }
 
   return (
     <div className="py-2">
@@ -9,7 +17,10 @@ function PostDescription({ description, likes, comments }) {
         <span className="text-[1.2rem] font-semibold">
           {likes?.length || 0} Likes
         </span>
-        <span className="text-[1.2rem] font-semibold">
+        <span
+          className="text-[1.2rem] font-semibold hover:cursor-pointer"
+          onClick={handleOpenCommentsList}
+        >
           {comments?.length || 0} Comments
         </span>
       </div>
