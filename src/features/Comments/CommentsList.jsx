@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Local Imports
 import Comment from "./Comment";
-import useQueryFn from "../../services/useQuery";
+import useQueryFn from "../../hooks/useQuery";
 import { getComments } from "../../services/FormSubmitAPI";
 import { clearPostId, closeCommentsListBox } from "../Posts/postSlice";
 

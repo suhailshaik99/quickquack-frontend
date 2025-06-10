@@ -1,5 +1,5 @@
 // Library Imports
-import useQueryFn from "../../services/useQuery";
+import useQueryFn from "../../hooks/useQuery";
 
 // Local Imports
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";

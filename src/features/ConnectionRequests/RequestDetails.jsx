@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Story from "../Stories/Story";
 import { useDispatch } from "react-redux";
 import { closeRequestsBox } from "./requestSlice";
-import { useConfirmReq, useDeleteReq } from "./useConfirmDeleteReq";
+import { useConfirmReq, useDeleteReq } from "../../hooks/useConfirmDeleteReq";
 
 const buttonStyles =
   "rounded-lg bg-sky-300 p-2 text-[1.2rem] font-semibold text-slate-700 transition-colors duration-300 focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 cusor:pointer";

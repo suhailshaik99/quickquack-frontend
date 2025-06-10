@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Local Imports
-import { createLike, createUnlike } from "../../services/FormSubmitAPI";
+import { createLike, createUnlike } from "../services/FormSubmitAPI";
 
 function useLikePost() {
   const queryClient = useQueryClient();

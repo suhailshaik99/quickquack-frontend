@@ -1,5 +1,5 @@
+import useQueryFn from "../../hooks/useQuery";
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";
-import useQueryFn from "../../services/useQuery";
 
 function UserProfileHeader({ username }) {
   const { data: userProfileDetails, isLoading } = useQueryFn(

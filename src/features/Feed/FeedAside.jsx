@@ -1,5 +1,6 @@
-import FeedNavigation from "./FeedNavigation";
+// Local Imports
 import FeedLogo from "./FeedLogo";
+import FeedNavigation from "./FeedNavigation";
 
 function FeedAside() {
   return (

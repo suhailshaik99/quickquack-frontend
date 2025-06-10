@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 // Local Imports
 import AddDetailsForm from "./AddDetailsForm";
 import UploadImageForm from "./UploadImageForm";
-import useMutationFunc from "../../services/useMutation";
+import useMutationFunc from "../../hooks/useMutation";
 import { createPost } from "../../services/FormSubmitAPI";
 
 function CreatePost() {

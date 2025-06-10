@@ -3,7 +3,7 @@ import { ImCross } from "react-icons/im";
 import { useDispatch } from "react-redux";
 
 // Local Imports
-import useQueryFn from "../../services/useQuery";
+import useQueryFn from "../../hooks/useQuery";
 import { closeRequestsBox } from "./requestSlice";
 import { getFriendRequests } from "../../services/FormSubmitAPI";
 import RequestDetails from "./RequestDetails";
@@ -17,7 +17,7 @@ function RequestsBox() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20 backdrop-blur-sm">
-      <div className="flex h-[50rem] w-[45rem] flex-col rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md">
+      <div className="flex h-[50rem] w-[40rem] flex-col rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md sm:w-[45rem]">
         <div className="border-b-2 border-slate-300 px-5">
           <ImCross
             size={14}

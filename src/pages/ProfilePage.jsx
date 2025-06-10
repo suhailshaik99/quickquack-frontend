@@ -1,5 +1,5 @@
 // Local Imports
-import useQueryFn from "../services/useQuery";
+import useQueryFn from "../hooks/useQuery";
 import ProfileTabs from "../features/Profile/ProfileTabs";
 import ProfilePosts from "../features/Profile/ProfilePosts";
 import ProfileHeader from "../features/Profile/ProfileHeader";

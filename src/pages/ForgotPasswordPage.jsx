@@ -1,13 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+// Library Imports
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 
-import InputElement from "../UI/InputElement";
-import useMutationFunc from "../services/useMutation";
+// Local Imports
 import {
   ChangePasswordSubmission,
   sendOTPSubmission,
 } from "../services/FormSubmitAPI";
-import { useEffect } from "react";
+import InputElement from "../UI/InputElement";
+import useMutationFunc from "../hooks/useMutation";
 
 function ForgotPassword() {
   const navigate = useNavigate();

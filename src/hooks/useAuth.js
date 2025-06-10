@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 
-import { userAuthentication, userLogout } from "./userSlice";
-import { authenticateUser } from "../../services/FormSubmitAPI";
+import { authenticateUser } from "../services/FormSubmitAPI";
+import { userAuthentication, userLogout } from "../features/Authentication/userSlice";
 
 function useAuth() {
   const dispatch = useDispatch();

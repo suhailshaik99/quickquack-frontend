@@ -1,8 +1,10 @@
+// Library Imports
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// Local Imports
 import Form from "../UI/SignUpForm";
-import useMutationFunc from "../services/useMutation";
+import useMutationFunc from "../hooks/useMutation";
 import { SignUpFormSubmission } from "../services/FormSubmitAPI";
 
 function SignupPage() {

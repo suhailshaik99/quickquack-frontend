@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   cancelFriendRequest,
   sendFriendRequest,
-} from "../../services/FormSubmitAPI";
+} from "../services/FormSubmitAPI";
 
 function useSendReq() {
   const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 // Local Imports
 import PeopleBrief from "./PeopleBrief";
-import useQueryFn from "../../services/useQuery";
+import useQueryFn from "../../hooks/useQuery";
 import { getSuggestedFriends } from "../../services/FormSubmitAPI";
 
 function SuggestedUsersBox() {

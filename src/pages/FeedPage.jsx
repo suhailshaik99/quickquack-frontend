@@ -1,5 +1,5 @@
 import Post from "../features/Posts/Post";
-import useQueryFn from "../services/useQuery";
+import useQueryFn from "../hooks/useQuery";
 import { getPosts } from "../services/FormSubmitAPI";
 import FeedStories from "../features/Stories/FeedStories";
 

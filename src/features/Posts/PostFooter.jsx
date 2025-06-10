@@ -1,12 +1,12 @@
 // Library Imports
-import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
 import { BiCollection } from "react-icons/bi";
 import { TbLocationShare } from "react-icons/tb";
 import { FaRegCommentAlt } from "react-icons/fa";
 
 // Local Imports
-import { useLikePost, useUnlikePost } from "./useLikePost";
+import { useLikePost, useUnlikePost } from "../../hooks/useLikePost";
 
 function SpanElement({ children, handleClick = undefined }) {
   return (

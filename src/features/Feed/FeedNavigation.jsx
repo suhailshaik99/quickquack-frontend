@@ -38,7 +38,7 @@ function FeedNavigation() {
 
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
-      <NavLink to="/" className="">
+      <NavLink to="/">
         <NavlinkItem>
           <AiFillHome />
           <span className="">Home</span>

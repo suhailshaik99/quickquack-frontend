@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 
 // Local Imports
-import useComment from "./useComment";
+import useComment from "../../hooks/useComment";
 
 function CommentBox({ postId, handleOpenCommentBox }) {
   const { mutate: mutateComment, isPending } = useComment();
@@ -18,7 +18,7 @@ function CommentBox({ postId, handleOpenCommentBox }) {
   }
 
   return (
-    <div className="py-2 h-auto">
+    <div className="h-auto py-2">
       <p className="mb-1 pl-2 text-[1.5rem] font-semibold">Post Comment</p>
       <div className="">
         <form
