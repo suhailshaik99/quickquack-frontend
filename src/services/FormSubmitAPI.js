@@ -285,6 +285,115 @@ async function getSuggestedFriends() {
   }
 }
 
+async function sendFriendRequest(recipient) {
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_FRIEND_REQUEST,
+      { recipient },
+      { withCredentials: true },
+    );
+
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to send request at the moment",
+      );
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Unable to send request at the moment";
+    console.log(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+
+async function cancelFriendRequest(recipient) {
+  try {
+    const response = await axios.delete(
+      import.meta.env.VITE_CANCEL_FRIEND_REQUEST,
+      {
+        data: { recipient },
+        withCredentials: true,
+      },
+    );
+
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to cancel request at the moment",
+      );
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to cancel request at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function deleteFriendRequest(requester) {
+  try {
+    const response = await axios.delete(import.meta.env.VITE_FRIEND_REQUEST, {
+      data: { requester },
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to delete request at the moment",
+      );
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to delete request at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function confirmFriendRequest({docId, userId}) {
+  try {
+    const response = await axios.put(
+      import.meta.env.VITE_FRIEND_REQUEST,
+      { docId, requester: userId },
+      {
+        withCredentials: true,
+      },
+    );
+    console.log(response.data);
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to confirm request at the moment",
+      );
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to confirm request at the moment";
+    console.log(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+
+async function getFriendRequests() {
+  try {
+    const response = await axios.get(import.meta.env.VITE_FRIEND_REQUEST, {
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error("Unable to get pending requests at the moment");
+    }
+    return response.data.requests;
+  } catch (error) {
+    console.log(error?.response?.data);
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Unable to get pending requests at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
 export {
   getPosts,
   createPost,
@@ -294,9 +403,14 @@ export {
   createComment,
   authenticateUser,
   getProfileDetails,
+  getFriendRequests,
   sendOTPSubmission,
+  sendFriendRequest,
+  cancelFriendRequest,
+  deleteFriendRequest,
   getSuggestedFriends,
   LoginFormSubmission,
+  confirmFriendRequest,
   SignUpFormSubmission,
   getUserProfileDetails,
   verifyUserAuthentication,

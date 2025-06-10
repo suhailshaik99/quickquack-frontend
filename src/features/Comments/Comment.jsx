@@ -8,7 +8,7 @@ function Comment({ comment }) {
   return (
     <div className="flex gap-3 py-2">
       <div className="flex-shrink-0">
-        <Story height={3.5} width={3.5} imageUrl={profilePicture} />
+        <Story height={3.5} width={3.5} profilePicture={profilePicture} />
       </div>
 
       <div className="flex flex-col gap-2 text-[1.4rem]">

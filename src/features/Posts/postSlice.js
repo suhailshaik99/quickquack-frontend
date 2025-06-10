@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  postId: null,
   openPostBox: false,
   openCommentsList: false,
-  postId: null,
 };
 
 const postSlice = createSlice({
@@ -37,8 +37,8 @@ export default postSlice.reducer;
 export const {
   openBox,
   closeBox,
-  openCommentsListBox,
-  closeCommentsListBox,
   setPostId,
   clearPostId,
+  openCommentsListBox,
+  closeCommentsListBox,
 } = postSlice.actions;
