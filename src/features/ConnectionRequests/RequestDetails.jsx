@@ -44,7 +44,7 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
       >
         <Story height={5} width={5} profilePicture={profilePicture} />
         <div className="">
-          <p className="text-2xl font-semibold tracking-wide text-slate-700">
+          <p className="text-xl sm:text-2xl font-semibold tracking-wide text-slate-700">
             {username || "username"}
           </p>
         </div>

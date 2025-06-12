@@ -1,16 +1,30 @@
+// Library Imports
 import { FaCog } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 
+// Local Imports
+import { openFriendsBox, setViewFollowers, setViewFollowing } from "./profileSlice";
+
 function ProfileHeader() {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const { firstName, lastName, username, bio, profilePicture } = useSelector(
+    (state) => state.user.userDetails,
+  );
 
-    const queryClient = useQueryClient();
-    const { firstName, lastName, username, bio, profilePicture } = useSelector(
-      (state) => state.user.userDetails,
-    );
-    const data = queryClient.getQueryData(["profileDetails"]);
-    const { postsCount, followersCount, followingCount } = data;
+  const data = queryClient.getQueryData(["profileDetails"]);
+  const { postsCount, followersCount, followingCount } = data;
 
+  function handleFollowersClick() {
+    dispatch(setViewFollowers())
+    dispatch(openFriendsBox());
+  }
+
+  function handleFollowingClick() {
+    dispatch(setViewFollowing());
+    dispatch(openFriendsBox());
+  }
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -34,11 +48,11 @@ function ProfileHeader() {
           <strong>{postsCount || 0}</strong>{" "}
           <span className="font-medium text-slate-700">Posts</span>
         </p>
-        <p>
+        <p onClick={handleFollowersClick} className="hover:cursor-pointer">
           <strong>{followersCount || 0}</strong>{" "}
           <span className="font-medium text-slate-700">followers</span>
         </p>
-        <p>
+        <p onClick={handleFollowingClick} className="hover:cursor-pointer">
           <strong>{followingCount || 0}</strong>{" "}
           <span className="font-medium text-slate-700">following</span>
         </p>

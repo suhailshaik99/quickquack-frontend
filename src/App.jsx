@@ -20,6 +20,7 @@ import Settings from "./features/Feed/Settings";
 import ForgotPassword from "./pages/ForgotPasswordPage";
 import UsersProfilePage from "./pages/UsersProfilePage";
 import NotificationsPage from "./pages/NotificationsPage";
+import { SocketProvider } from "./contexts/socketContext";
 import { verifyUserAuthentication } from "./services/FormSubmitAPI";
 
 const queryClient = new QueryClient();
@@ -37,44 +38,46 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Toaster
-        position="top-center"
-        gutter={12}
-        containerStyle={{ margin: "8px" }}
-        toastOptions={{
-          success: {
-            duration: 2000,
-          },
-          error: {
-            duration: 4000,
-          },
-          style: {
-            fontSize: "16px",
-            // maxWidth: "500px",
-            padding: "10px 18px",
-            backgroundColor: "gray",
-            color: "white",
-          },
-        }}
-      />
-      <BrowserRouter>
-        <Routes>
-          <Route element={isAuthenticated ? <AppLayout /> : <Home />}>
-            <Route path="/" element={<FeedPage />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="search" element={<SearchPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="profile/:username" element={<UsersProfilePage />} />
-            <Route path="messages" element={<MessagesPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-        </Routes>
-      </BrowserRouter>
+      <SocketProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: {
+              duration: 2000,
+            },
+            error: {
+              duration: 4000,
+            },
+            style: {
+              fontSize: "16px",
+              // maxWidth: "500px",
+              padding: "10px 18px",
+              backgroundColor: "gray",
+              color: "white",
+            },
+          }}
+        />
+        <BrowserRouter>
+          <Routes>
+            <Route element={isAuthenticated ? <AppLayout /> : <Home />}>
+              <Route path="/" element={<FeedPage />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="search" element={<SearchPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/:username" element={<UsersProfilePage />} />
+              <Route path="messages" element={<MessagesPage />} />
+              <Route path="notifications" element={<NotificationsPage />} />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+          </Routes>
+        </BrowserRouter>
+      </SocketProvider>
     </QueryClientProvider>
   );
 }

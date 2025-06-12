@@ -351,7 +351,7 @@ async function deleteFriendRequest(requester) {
   }
 }
 
-async function confirmFriendRequest({docId, userId}) {
+async function confirmFriendRequest({ docId, userId }) {
   try {
     const response = await axios.put(
       import.meta.env.VITE_FRIEND_REQUEST,
@@ -360,7 +360,6 @@ async function confirmFriendRequest({docId, userId}) {
         withCredentials: true,
       },
     );
-    console.log(response.data);
     if (!response.data.success) {
       throw new Error(
         response.data.message || "Unable to confirm request at the moment",
@@ -371,7 +370,6 @@ async function confirmFriendRequest({docId, userId}) {
     const errorMessage =
       error?.response?.data?.message ||
       "Unable to confirm request at the moment";
-    console.log(errorMessage);
     throw new Error(errorMessage);
   }
 }
@@ -386,10 +384,65 @@ async function getFriendRequests() {
     }
     return response.data.requests;
   } catch (error) {
-    console.log(error?.response?.data);
     const errorMessage =
       error?.response?.data?.message ||
       "Unable to get pending requests at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getFriends() {
+  try {
+    const response = await axios.get(import.meta.env.VITE_GET_FRIENDS, {
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error("Unable to get friends at the moment");
+    }
+    return response?.data?.friends;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Unable to get friends at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function removeFollower(friendId) {
+  try {
+    const response = await axios.delete(import.meta.env.VITE_REMOVE_FOLLOWER, {
+      data: {
+        friendId,
+      },
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error("Error removing follower");
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Error removing follower";
+    throw new Error(errorMessage);
+  }
+}
+
+async function unfollowUser(friendId) {
+  try {
+    const response = await axios.delete(import.meta.env.VITE_REMOVE_FOLLOWING, {
+      data: {
+        friendId,
+      },
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error("Error removing the user from following list");
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Error removing the user from following list";
+    console.log(error);
     throw new Error(errorMessage);
   }
 }
@@ -398,9 +451,12 @@ export {
   getPosts,
   createPost,
   createLike,
+  getFriends,
   getComments,
   createUnlike,
+  unfollowUser,
   createComment,
+  removeFollower,
   authenticateUser,
   getProfileDetails,
   getFriendRequests,

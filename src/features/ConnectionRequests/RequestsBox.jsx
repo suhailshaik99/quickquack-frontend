@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 
 // Local Imports
 import useQueryFn from "../../hooks/useQuery";
+import RequestDetails from "./RequestDetails";
 import { closeRequestsBox } from "./requestSlice";
 import { getFriendRequests } from "../../services/FormSubmitAPI";
-import RequestDetails from "./RequestDetails";
 
 function RequestsBox() {
   const dispatch = useDispatch();
