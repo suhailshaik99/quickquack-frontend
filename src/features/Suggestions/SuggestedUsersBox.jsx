@@ -13,7 +13,7 @@ function SuggestedUsersBox() {
   if (isPending) return <p>Loading suggestions...</p>;
   if (isError) return <p>Something went wrong</p>;
   return (
-    <section className="m-auto flex h-[36rem] w-[42rem] flex-col overflow-hidden rounded-2xl shadow-md shadow-slate-400">
+    <div className="m-auto flex w-[42rem] flex-col overflow-hidden rounded-2xl shadow-sm shadow-slate-400 sm:h-[36rem]">
       <h1 className="mb-3 bg-sky-500 p-2 text-center text-[1.8rem] font-medium tracking-wide text-yellow-50">
         Suggested people for you
       </h1>
@@ -36,7 +36,7 @@ function SuggestedUsersBox() {
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 }
 

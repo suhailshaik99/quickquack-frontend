@@ -4,7 +4,7 @@ import FeedNavigation from "./FeedNavigation";
 
 function FeedAside() {
   return (
-    <aside className="sm:flex hidden min-w-[26rem] flex-col gap-[5rem]">
+    <aside className="hidden min-w-[26rem] flex-shrink flex-col gap-[5rem] sm:flex">
       <FeedLogo />
       <FeedNavigation />
     </aside>

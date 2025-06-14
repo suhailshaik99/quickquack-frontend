@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import useAuth from "../hooks/useAuth";
 import FeedAside from "../features/Feed/FeedAside";
 import CreatePost from "../features/Posts/CreatePost";
+import FriendsBox from "../features/Profile/FriendsBox";
+import MessageBox from "../features/Messages/MessageBox";
 import MobileFeedNav from "../features/Feed/MobileFeedNav";
 import CommentsList from "../features/Comments/CommentsList";
 import MobileFeedHeader from "../features/Feed/MobileFeedHeader";
 import RequestsBox from "../features/ConnectionRequests/RequestsBox";
+import OnlineUsersBox from "../features/OnlineFriends/OnlineUsersBox";
 import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
-import FriendsBox from "../features/Profile/FriendsBox";
-import MessageBox from "../features/Messages/MessageBox";
 
 function AppLayout() {
   const { messageBox } = useSelector((state) => state.message);
@@ -39,8 +40,9 @@ function AppLayout() {
             <Outlet />
           </div>
         </main>
-        <section className="hidden place-items-center px-3 lg:grid">
+        <section className="bottom-2 hidden place-items-center gap-2 p-3 lg:grid">
           <SuggestedUsersBox />
+          {/* <OnlineUsersBox /> */}
         </section>
         <MobileFeedNav />
       </div>
