@@ -12,7 +12,6 @@ import MobileFeedNav from "../features/Feed/MobileFeedNav";
 import CommentsList from "../features/Comments/CommentsList";
 import MobileFeedHeader from "../features/Feed/MobileFeedHeader";
 import RequestsBox from "../features/ConnectionRequests/RequestsBox";
-import OnlineUsersBox from "../features/OnlineFriends/OnlineUsersBox";
 import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
 
 function AppLayout() {
@@ -36,7 +35,7 @@ function AppLayout() {
         <FeedAside />
         <MobileFeedHeader />
         <main className="flex h-full flex-shrink-0 justify-center overflow-y-auto">
-          <div className="flex h-full overflow-y-auto">
+          <div className="flex w-full h-full overflow-y-auto">
             <Outlet />
           </div>
         </main>

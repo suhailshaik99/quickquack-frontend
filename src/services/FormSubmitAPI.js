@@ -193,7 +193,6 @@ async function createComment({ postId, data }) {
     }
     return response.data;
   } catch (error) {
-    console.log(error.response.data);
     const errorMessage =
       error?.response?.data?.message || "Error posting the comment...";
     throw new Error(errorMessage);
@@ -442,7 +441,42 @@ async function unfollowUser(friendId) {
     const errorMessage =
       error?.response?.data?.message ||
       "Error removing the user from following list";
-    console.log(error);
+    throw new Error(errorMessage);
+  }
+}
+
+async function getMessageCards() {
+  try {
+    const response = await axios.get(import.meta.env.VITE_GET_MESSAGE_CARDS, {
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error("Error fetching the message cards at the moment");
+    }
+    return response.data.messages;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Error fetching the message cards at the moment";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getUserMessages({ queryKey }) {
+  const [, receiver] = queryKey[0];
+  const url = import.meta.env.VITE_GET_USER_MESSAGES.replace(
+    ":receiver",
+    receiver,
+  );
+  try {
+    const response = await axios.get(url, { withCredentials: true });
+    if (!response.data.success) {
+      throw new Error("Error fetching the user messages");
+    }
+    return response?.data?.userMessages;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Error fetching the user messages..";
     throw new Error(errorMessage);
   }
 }
@@ -457,6 +491,8 @@ export {
   unfollowUser,
   createComment,
   removeFollower,
+  getMessageCards,
+  getUserMessages,
   authenticateUser,
   getProfileDetails,
   getFriendRequests,

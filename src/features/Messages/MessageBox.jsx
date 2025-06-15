@@ -1,91 +1,127 @@
 // Library Imports
 import moment from "moment-timezone";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 // Icon Imports
-import { IoMdClose } from "react-icons/io";
 import { FaPaperPlane } from "react-icons/fa";
-import { IoMdArrowBack } from "react-icons/io";
+import { IoMdClose, IoMdArrowBack } from "react-icons/io";
 
 // Local Imports
 import Story from "../Stories/Story";
+import useQueryFn from "../../hooks/useQuery";
 import { setMessageBox } from "./messageSlice";
 import TypingIndicator from "../../UI/TypingIndicator";
 import { useSocket } from "../../contexts/socketContext";
+import { getUserMessages } from "../../services/FormSubmitAPI";
 
 function MessageBox() {
+  const bottomRef = useRef();
   const socket = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const messageRef = useRef(null);
+  const queryClient = useQueryClient();
+
   const [typing, setTyping] = useState("");
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const { _id: userId } = useSelector((state) => state.user.userDetails);
+  const [allMessages, setAllMessages] = useState([]);
+
   const {
     userId: receiverId,
     username,
     profilePicture,
   } = useSelector((state) => state.message.recipient);
+  const { _id: userId } = useSelector((state) => state.user.userDetails);
 
-  // Handler Functions
-  // F1
+  const {
+    data: apiMessages = [],
+    isPending,
+    isSuccess,
+  } = useQueryFn(["getUserMessages", receiverId], getUserMessages, {
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    if (isSuccess && apiMessages.length) {
+      setAllMessages(apiMessages);
+    }
+  }, [isSuccess, apiMessages]);
+
+  useEffect(() => {
+    bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages]);
+
+  useEffect(() => {
+    const handleIncoming = (msg) => {
+      // ✅ Only push message if it's from the selected chat partner
+      // if (
+      //   msg.sender === receiverId || // current open chat sender
+      //   msg.receiver === receiverId // current open chat receiver
+      // ) {
+      //   setAllMessages((prev) => {
+      //     const exists = prev.some((m) => m._id === msg._id);
+      //     return exists ? prev : [...prev, { ...msg, user: false }];
+      //   });
+      // } else {
+      //   // ❌ Message is for another conversation
+      //   console.log("⚠️ Message ignored: not from active chat", msg);
+      // }
+      setAllMessages((prev) => {
+          const exists = prev.some((m) => m._id === msg._id);
+          return exists ? prev : [...prev, { ...msg, user: false }];
+        });
+    };
+
+    socket.on("private-message", handleIncoming);
+    socket.on("typing", () => {
+      setTyping("typing");
+      setTimeout(() => setTyping(""), 4000);
+    });
+
+    return () => {
+      socket.off("private-message", handleIncoming);
+      socket.off("typing");
+    };
+  }, [socket, receiverId, userId]);
+
   function handleProfileClick() {
     dispatch(setMessageBox());
     navigate(`/profile/${username}`);
   }
 
-  // F2
   function handleClose() {
+    queryClient.invalidateQueries(["messageCards"]); // ✅ triggers re-fetch of card data
     dispatch(setMessageBox());
   }
 
-  // F3
-  function handleChangeMessage(e) {
-    setMessage(e.target.value);
+  function handleChangeMessage() {
     socket.emit("typing", { userId, receiverId });
   }
 
-  // F4
   function handleSendMessage() {
-    if(!message) return;
-    const messageSentAt = moment().tz("Asia/Kolkata").format("h:mm:A");
-    const fullTime = moment().tz("Asia/Kolkata").format("YYYY-MM-DD h:mm A z");
+    const message = messageRef.current?.value?.trim();
+    if (!message) return;
+
+    const timeNow = moment().tz("Asia/Kolkata");
 
     const userMessage = {
+      message,
+      fullTime: timeNow.format("YYYY-MM-DD h:mm:ss A z"),
+      messageSentAt: timeNow.format("h:mm A"),
+      user: true,
       sender: userId,
       receiver: receiverId,
-      message,
-      messageSentAt,
-      fullTime,
-      user: true,
+      _id: `${Date.now()}-${Math.random()}`,
     };
 
-    // Event Emitter
     socket.emit("private-message", userMessage);
-
-    // Restoring state
-    setMessage("");
-    setMessages((prevMsgs) => [...prevMsgs, userMessage]);
+    setAllMessages((prev) => [...prev, userMessage]);
+    messageRef.current.value = "";
   }
-
-  useEffect(
-    function () {
-      socket.on("private-message", (msg) => {
-        setMessages((prevMsgs) => [...prevMsgs, { ...msg, user: false }]);
-      });
-      socket.on("typing", () => {
-        setTyping("typing");
-        setTimeout(() => {
-          setTyping("");
-        }, 4000);
-      });
-
-      return () => socket.off("private-message");
-    },
-    [socket],
-  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm">
@@ -114,25 +150,28 @@ function MessageBox() {
           </button>
         </div>
 
-        {/* Messages Area */}
+        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-3">
           <div className="flex flex-col gap-2 px-2">
-            {messages?.map((msg, i) => (
-              <Message key={i} user={msg.user} time={msg.messageSentAt}>
+            {isPending && <p>Loading conversation</p>}
+            {allMessages.map((msg) => (
+              <Message key={msg._id} user={msg.user} time={msg.messageSentAt}>
                 {msg.message}
               </Message>
             ))}
           </div>
+          <div ref={bottomRef} />
         </div>
 
         {typing && <TypingIndicator />}
-        {/* Input Area */}
+
+        {/* Input */}
         <div className="flex items-center border-t px-3 py-2">
           <input
             type="text"
             placeholder="Type a message..."
-            value={message}
-            onChange={(e) => handleChangeMessage(e)}
+            ref={messageRef}
+            onChange={handleChangeMessage}
             onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
             className="flex-1 rounded-full border border-gray-300 px-4 py-3 text-[1.4rem] font-medium placeholder:text-[1.2rem] focus:outline-none focus:ring-2 focus:ring-sky-400 sm:text-[1.3rem]"
           />
@@ -154,8 +193,8 @@ function Message({ children, user = true, time = "10:30 AM" }) {
       <div
         className={`relative inline-block max-w-[70%] rounded-xl px-4 py-2 text-[1.3rem] font-medium text-white sm:text-[1.4rem] ${
           user
-            ? "rounded-tr-none bg-sky-500" // sent message
-            : "rounded-tl-none bg-sky-300 text-gray-900" // received message
+            ? "rounded-tr-none bg-sky-500"
+            : "rounded-tl-none bg-sky-300 text-gray-900"
         }`}
       >
         <div className="pr-12">{children}</div>
