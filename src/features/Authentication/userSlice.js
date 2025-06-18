@@ -1,4 +1,7 @@
+// Library Imports
 import { createSlice } from "@reduxjs/toolkit";
+
+// Local Imports
 import { verifyUserAuthentication } from "../../services/FormSubmitAPI";
 
 const initialState = {
@@ -24,6 +27,10 @@ const userSlice = createSlice({
       state.userDetails = {};
       state.isAuthenticated = false;
     },
+
+    setUserDetails(state, action) {
+      state.userDetails = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -45,4 +52,5 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { userLogin, userLogout, userAuthentication } = userSlice.actions;
+export const { userLogin, userLogout, setUserDetails, userAuthentication } =
+  userSlice.actions;

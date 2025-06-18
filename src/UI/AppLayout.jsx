@@ -13,12 +13,16 @@ import CommentsList from "../features/Comments/CommentsList";
 import MobileFeedHeader from "../features/Feed/MobileFeedHeader";
 import RequestsBox from "../features/ConnectionRequests/RequestsBox";
 import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
+import ProfileEditBox from "../features/Profile/ProfileEditBox";
+import ProfileOptionsBox from "../features/Profile/ProfileOptionsBox";
+import ProfileViewer from "./ProfileViewer";
 
 function AppLayout() {
   const { messageBox } = useSelector((state) => state.message);
-  const { openFriendsBox } = useSelector((state) => state.profile);
   const { openRequestsBox } = useSelector((state) => state.requests);
   const { openPostBox, openCommentsList } = useSelector((state) => state.post);
+  const { openFriendsBox, viewProfileEditBox, profileOptionsBox, profileViewer } =
+    useSelector((state) => state.profile);
   useAuth();
 
   return (
@@ -28,14 +32,17 @@ function AppLayout() {
       {openPostBox && <CreatePost />}
       {openFriendsBox && <FriendsBox />}
       {openRequestsBox && <RequestsBox />}
+      {profileViewer && <ProfileViewer />}
       {openCommentsList && <CommentsList />}
+      {viewProfileEditBox && <ProfileEditBox />}
+      {profileOptionsBox && <ProfileOptionsBox />}
 
       {/* Main Grid Layout */}
       <div className="grid h-full grid-cols-1 grid-rows-[auto_1fr_auto] divide-x bg-sky-50 sm:grid-cols-[auto_1fr] lg:grid-cols-[auto_5fr_3fr]">
         <FeedAside />
         <MobileFeedHeader />
         <main className="flex h-full flex-shrink-0 justify-center overflow-y-auto">
-          <div className="flex w-full h-full overflow-y-auto">
+          <div className="flex h-full w-full justify-center overflow-y-auto">
             <Outlet />
           </div>
         </main>

@@ -16,7 +16,7 @@ function CreatePost() {
     formState: { errors },
     trigger,
   } = useForm();
-  const [mutate, isPending, ] = useMutationFunc(
+  const [mutate, isPending] = useMutationFunc(
     createPost,
     "Post Uploaded Successfully.",
     "Trouble Uploading Post..",
@@ -31,7 +31,7 @@ function CreatePost() {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-20 backdrop-blur-sm">
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
         encType="multipart/form-data"

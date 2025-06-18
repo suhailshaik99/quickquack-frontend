@@ -265,6 +265,27 @@ async function getProfileDetails() {
   }
 }
 
+async function updateProfileDetails(data) {
+  try {
+    const response = await axios.put(
+      import.meta.env.VITE_UPDATE_PROFILE_DETAILS_URL,
+      data,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Unable to update profile details",
+      );
+    }
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+    const errorMessage =
+      error?.response?.data?.message || "Unable to update profile details";
+    throw new Error(errorMessage);
+  }
+}
+
 async function getSuggestedFriends() {
   try {
     const response = await axios.get(
@@ -502,6 +523,7 @@ export {
   deleteFriendRequest,
   getSuggestedFriends,
   LoginFormSubmission,
+  updateProfileDetails,
   confirmFriendRequest,
   SignUpFormSubmission,
   getUserProfileDetails,

@@ -1,9 +1,10 @@
 // Library Imports
-import { useDispatch } from "react-redux";
-import { FaSearch } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// Icon Imports
+import { FaSearch } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
-import { IoSettings } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
@@ -26,7 +27,7 @@ function NavlinkItem({ children }) {
 function handlePostClick(dispatch) {
   dispatch(openBox());
   return;
-};
+}
 
 function handleRequestsClick(dispatch) {
   dispatch(openRequestsBox());
@@ -35,7 +36,8 @@ function handleRequestsClick(dispatch) {
 
 function FeedNavigation() {
   const dispatch = useDispatch();
-
+  const unreadMessages = useSelector((state) => state.message.unreadMessages);
+  const unreadMessagesCount = Object.entries(unreadMessages).length;
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
       <NavLink to="/">
@@ -59,7 +61,16 @@ function FeedNavigation() {
       <NavLink to="/messages">
         <NavlinkItem>
           <BiSolidMessageSquareDetail />
-          <span>Messages</span>
+          <div className="relative flex items-center gap-2">
+            <span>Messages</span>
+            {unreadMessagesCount > 0 && (
+              <span
+                className="absolute -right-3 top-1 inline-flex h-7 w-7 -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-sky-500 text-[1.2rem] font-bold text-white" // Adjusted positioning
+              >
+                {unreadMessagesCount}
+              </span>
+            )}
+          </div>
         </NavlinkItem>
       </NavLink>
       <NavLink onClick={() => handleRequestsClick(dispatch)}>
@@ -80,12 +91,12 @@ function FeedNavigation() {
           <span>Notifications</span>
         </NavlinkItem>
       </NavLink>
-      <NavLink to="/settings">
+      {/* <NavLink to="/settings">
         <NavlinkItem>
           <IoSettings />
           <span>Settings</span>
         </NavlinkItem>
-      </NavLink>
+      </NavLink> */}
       <NavLink to="/logout">
         <NavlinkItem>
           <FaSignOutAlt />

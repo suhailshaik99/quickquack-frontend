@@ -1,7 +1,10 @@
+// Library Imports
 import { useParams } from "react-router-dom";
-import UserProfileHeader from "../features/UserProfile/UserProfileHeader";
+
+// Local Imports
 import UserProfileTabs from "../features/UserProfile/UserProfileTabs";
 import UserProfilePosts from "../features/UserProfile/UserProfilePosts";
+import UserProfileHeader from "../features/UserProfile/UserProfileHeader";
 
 function UsersProfilePage() {
   const { username } = useParams();

@@ -12,10 +12,17 @@ import { IoMdClose, IoMdArrowBack } from "react-icons/io";
 // Local Imports
 import Story from "../Stories/Story";
 import useQueryFn from "../../hooks/useQuery";
-import { setMessageBox } from "./messageSlice";
 import TypingIndicator from "../../UI/TypingIndicator";
 import { useSocket } from "../../contexts/socketContext";
 import { getUserMessages } from "../../services/FormSubmitAPI";
+import {
+  setMessageBox,
+  setMessages,
+  addUserMessage,
+  clearMessages,
+  clearUnreadMessages,
+  clearRecipientDetails,
+} from "./messageSlice";
 
 function MessageBox() {
   const bottomRef = useRef();
@@ -26,14 +33,13 @@ function MessageBox() {
   const queryClient = useQueryClient();
 
   const [typing, setTyping] = useState("");
-  const [allMessages, setAllMessages] = useState([]);
-
+  const { _id: userId } = useSelector((state) => state.user.userDetails);
+  const { allMessages, messageBox } = useSelector((state) => state.message);
   const {
     userId: receiverId,
     username,
     profilePicture,
   } = useSelector((state) => state.message.recipient);
-  const { _id: userId } = useSelector((state) => state.user.userDetails);
 
   const {
     data: apiMessages = [],
@@ -47,46 +53,31 @@ function MessageBox() {
 
   useEffect(() => {
     if (isSuccess && apiMessages.length) {
-      setAllMessages(apiMessages);
+      dispatch(setMessages(apiMessages));
     }
-  }, [isSuccess, apiMessages]);
+  }, [isSuccess, apiMessages, dispatch]);
 
   useEffect(() => {
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [allMessages]);
 
   useEffect(() => {
-    const handleIncoming = (msg) => {
-      // ✅ Only push message if it's from the selected chat partner
-      // if (
-      //   msg.sender === receiverId || // current open chat sender
-      //   msg.receiver === receiverId // current open chat receiver
-      // ) {
-      //   setAllMessages((prev) => {
-      //     const exists = prev.some((m) => m._id === msg._id);
-      //     return exists ? prev : [...prev, { ...msg, user: false }];
-      //   });
-      // } else {
-      //   // ❌ Message is for another conversation
-      //   console.log("⚠️ Message ignored: not from active chat", msg);
-      // }
-      setAllMessages((prev) => {
-          const exists = prev.some((m) => m._id === msg._id);
-          return exists ? prev : [...prev, { ...msg, user: false }];
-        });
-    };
+    if (receiverId) {
+      dispatch(clearUnreadMessages(receiverId));
+    }
+  }, [receiverId, dispatch]);
 
-    socket.on("private-message", handleIncoming);
-    socket.on("typing", () => {
-      setTyping("typing");
-      setTimeout(() => setTyping(""), 4000);
+  useEffect(() => {
+    socket.on("typing", ({ sender }) => {
+      if (sender === receiverId && messageBox) {
+        setTyping("typing...");
+        setTimeout(() => setTyping(""), 4000);
+      }
     });
-
     return () => {
-      socket.off("private-message", handleIncoming);
       socket.off("typing");
     };
-  }, [socket, receiverId, userId]);
+  }, [socket, receiverId, messageBox]);
 
   function handleProfileClick() {
     dispatch(setMessageBox());
@@ -94,8 +85,11 @@ function MessageBox() {
   }
 
   function handleClose() {
-    queryClient.invalidateQueries(["messageCards"]); // ✅ triggers re-fetch of card data
+    socket.emit("bulk-mark-read", {userId, receiverId});
+    queryClient.invalidateQueries(["messageCards"]);
     dispatch(setMessageBox());
+    dispatch(clearRecipientDetails());
+    dispatch(clearMessages());
   }
 
   function handleChangeMessage() {
@@ -103,6 +97,7 @@ function MessageBox() {
   }
 
   function handleSendMessage() {
+    
     const message = messageRef.current?.value?.trim();
     if (!message) return;
 
@@ -119,12 +114,12 @@ function MessageBox() {
     };
 
     socket.emit("private-message", userMessage);
-    setAllMessages((prev) => [...prev, userMessage]);
+    dispatch(addUserMessage(userMessage));
     messageRef.current.value = "";
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40">
       <div className="absolute inset-0 flex flex-col overflow-hidden rounded-none border border-gray-300 bg-sky-200 shadow-lg sm:bottom-4 sm:left-4 sm:right-auto sm:top-auto sm:h-[50rem] sm:w-[40rem] sm:rounded-xl">
         {/* Header */}
         <div className="flex items-center justify-between bg-sky-500 px-3 py-2 text-white">
@@ -191,7 +186,7 @@ function Message({ children, user = true, time = "10:30 AM" }) {
   return (
     <div className={`flex ${user ? "justify-end" : "justify-start"}`}>
       <div
-        className={`relative inline-block max-w-[70%] rounded-xl px-4 py-2 text-[1.3rem] font-medium text-white sm:text-[1.4rem] ${
+        className={`relative inline-block max-w-[70%] break-words rounded-xl px-4 py-2 text-[1.3rem] font-medium text-white sm:text-[1.4rem] ${
           user
             ? "rounded-tr-none bg-sky-500"
             : "rounded-tl-none bg-sky-300 text-gray-900"

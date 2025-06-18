@@ -7,7 +7,7 @@ function Story({ height = 7, width = 7, profilePicture }) {
       <img
         src={`${profilePicture ? profilePicture : "/DEFAULT_PROFILE.png"}`}
         alt="story_image"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain"
       />
     </div>
   );

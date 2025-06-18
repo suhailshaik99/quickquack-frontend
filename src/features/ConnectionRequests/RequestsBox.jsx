@@ -16,7 +16,7 @@ function RequestsBox() {
   );
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-20 backdrop-blur-sm">
       <div className="flex h-[50rem] w-[40rem] flex-col rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md sm:w-[45rem]">
         <div className="border-b-2 border-slate-300 px-5">
           <ImCross

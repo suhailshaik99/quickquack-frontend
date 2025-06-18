@@ -1,5 +1,5 @@
 // Library Imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Local Imports
 import Story from "../../features/Stories/Story";
@@ -13,7 +13,11 @@ function MessageCard({ msg }) {
     messageSentAt,
     profilePicture,
   } = msg;
+
   const dispatch = useDispatch();
+  const unreadCount = useSelector(
+    (state) => state.message.unreadMessages[userId]?.length || 0,
+  );
 
   function handleCardClick() {
     const details = {
@@ -24,7 +28,6 @@ function MessageCard({ msg }) {
     dispatch(setRecipientDetails(details));
     dispatch(setMessageBox());
   }
-
   return (
     <div
       className="w-inherit flex cursor-pointer items-center justify-between gap-4 rounded-xl bg-sky-100 px-4 py-3 shadow-md shadow-sky-200 transition-all duration-200 hover:bg-sky-300"
@@ -46,9 +49,14 @@ function MessageCard({ msg }) {
       </div>
 
       {/* Time */}
-      <div className="ml-auto whitespace-nowrap pl-2 text-sm text-gray-900">
+      <div className="ml-auto flex flex-col gap-1 whitespace-nowrap pl-2 text-sm text-gray-900">
         {/* {formatTime(lastMessage.createdAt)} */}
-        {messageSentAt}
+        <p className="font-bold">{messageSentAt}</p>
+        {unreadCount > 0 && (
+          <div className="ml-4 flex h-7 w-7 items-center justify-center rounded-[2rem] bg-sky-600 text-[1rem] font-bold text-white">
+            {unreadCount}
+          </div>
+        )}
       </div>
     </div>
   );

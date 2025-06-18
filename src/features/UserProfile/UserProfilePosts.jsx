@@ -12,7 +12,7 @@ function UserProfilePosts({ username }) {
     getUserProfileDetails,
   );
   if (isLoading) return <p> Loading posts... </p>;
-  const { posts, postsCount } = data;
+  const { posts, postsCount } = data || {};
   return (
     <div className={`mt-8 ${postsCount > 0 ? gridStyles : "grid grid-cols-1"}`}>
       {postsCount == 0 ? (

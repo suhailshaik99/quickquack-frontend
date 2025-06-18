@@ -4,6 +4,10 @@ const initialState = {
   viewFollowers: false,
   viewFollowing: false,
   openFriendsBox: false,
+  profileOptionsBox: false,
+  viewProfileEditBox: false,
+  profileViewer: false,
+  profilePictureURL: "",
 };
 
 const profileSlice = createSlice({
@@ -22,14 +26,27 @@ const profileSlice = createSlice({
     setViewFollowing(state) {
       state.viewFollowing = !state.viewFollowing;
     },
+    setViewProfileEditBox(state) {
+      state.viewProfileEditBox = !state.viewProfileEditBox;
+    },
+    setViewProfileOptionsBox(state) {
+      state.profileOptionsBox = !state.profileOptionsBox;
+    },
+    setProfileViewer(state, action) {
+      const isOpening = action.payload !== undefined && action.payload !== null;
+      state.profileViewer = isOpening;
+      state.profilePictureURL = isOpening ? action.payload : "";
+    },
   },
 });
 
 export default profileSlice.reducer;
 export const {
-  setFriendsBox,
   openFriendsBox,
   closeFriendsBox,
   setViewFollowers,
+  setProfileViewer,
   setViewFollowing,
+  setViewProfileEditBox,
+  setViewProfileOptionsBox,
 } = profileSlice.actions;

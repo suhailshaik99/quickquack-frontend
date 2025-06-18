@@ -1,5 +1,7 @@
+// Library Imports
 import { useState } from "react";
 
+// Local Imports
 import PostImage from "./PostImage";
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter";

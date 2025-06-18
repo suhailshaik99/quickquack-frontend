@@ -1,23 +1,38 @@
 // Library Imports
-import { FaCog } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+
+// Icon Imports
+import { MdEditSquare } from "react-icons/md";
 
 // Local Imports
-import { openFriendsBox, setViewFollowers, setViewFollowing } from "./profileSlice";
+import {
+  openFriendsBox,
+  setProfileViewer,
+  setViewFollowers,
+  setViewFollowing,
+  setViewProfileEditBox,
+} from "./profileSlice";
+import Story from "../Stories/Story";
+import useQueryFn from "../../hooks/useQuery";
+import { getProfileDetails } from "../../services/FormSubmitAPI";
 
 function ProfileHeader() {
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
-  const { firstName, lastName, username, bio, profilePicture } = useSelector(
-    (state) => state.user.userDetails,
-  );
 
-  const data = queryClient.getQueryData(["profileDetails"]);
-  const { postsCount, followersCount, followingCount } = data;
+  const { data } = useQueryFn("profileDetails", getProfileDetails);
+  const {
+    bio,
+    username,
+    lastName,
+    firstName,
+    postsCount,
+    followersCount,
+    followingCount,
+    profilePicture,
+  } = data || {};
 
   function handleFollowersClick() {
-    dispatch(setViewFollowers())
+    dispatch(setViewFollowers());
     dispatch(openFriendsBox());
   }
 
@@ -26,14 +41,21 @@ function ProfileHeader() {
     dispatch(openFriendsBox());
   }
 
+  function handleProfileEditClick() {
+    dispatch(setViewProfileEditBox());
+  }
+
+  function handleProfileClick() {
+    dispatch(setProfileViewer(profilePicture));
+  }
+
   return (
-    <div className="flex flex-col items-center text-center">
-      <div className="h-32 w-32 overflow-hidden rounded-full bg-gray-300">
-        <img
-          src={profilePicture || "DEFAULT_PROFILE.png"}
-          alt="Profile"
-          className="h-full w-full object-cover"
-        />
+    <div className="relative flex flex-col items-center text-center">
+      <div className="absolute right-0 hidden hover:cursor-pointer sm:block">
+        <MdEditSquare size={22} onClick={handleProfileEditClick} />
+      </div>
+      <div className="hover:cursor-pointer" onClick={handleProfileClick}>
+        <Story profilePicture={profilePicture} height={13} width={13} />
       </div>
 
       <p className="mb-4 mt-4 text-[1.7rem] font-medium">
@@ -59,19 +81,9 @@ function ProfileHeader() {
       </div>
 
       <div className="mt-4 border-t-2 border-slate-300">
-        <p className="pt-2 text-[1.3rem] font-normal">
+        <div className="whitespace-pre-line pt-2 text-left text-[1.4rem] font-medium">
           {bio || "Building something amazing!"}
-        </p>
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-        <button className="rounded-xl bg-sky-400 px-4 py-2 text-2xl font-medium text-white">
-          Edit Profile
-        </button>
-        <button className="rounded-xl bg-sky-400 px-4 py-2 text-2xl font-medium text-white">
-          View Archive
-        </button>
-        <FaCog className="mt-1 cursor-pointer text-xl" size={16} />
+        </div>
       </div>
     </div>
   );

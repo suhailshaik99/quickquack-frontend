@@ -1,12 +1,20 @@
+// Library Imports
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Local Imports
+import Story from "../Stories/Story";
 import useQueryFn from "../../hooks/useQuery";
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";
 
 function UserProfileHeader({ username }) {
-  const { data: userProfileDetails, isLoading } = useQueryFn(
-    ["userProfileDetails", username],
-    getUserProfileDetails,
-  );
-  if (isLoading) return <p>Loading...</p>;
+  const navigate = useNavigate();
+  const {
+    data: userProfileDetails,
+    isLoading,
+    isError,
+    error,
+  } = useQueryFn(["userProfileDetails", username], getUserProfileDetails, {retry: false});
   const {
     bio,
     firstName,
@@ -15,17 +23,26 @@ function UserProfileHeader({ username }) {
     followersCount,
     followingCount,
     postsCount,
-  } = userProfileDetails;
+  } = userProfileDetails || {};
+
+  useEffect(() => {
+    if (
+      isError &&
+      error?.message?.toLowerCase().includes("user doesn't exist")
+    ) {
+      navigate("/*", { replace: true });
+    }
+  }, [isError, error, navigate]);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="h-32 w-32 overflow-hidden rounded-full bg-gray-300">
-        <img
-          src={profilePicture || "/DEFAULT_PROFILE.png"}
-          alt="Profile"
-          className="h-full w-full object-cover"
-        />
-      </div>
+      <Story
+        profilePicture={profilePicture || "/DEFAULT_PROFILE.png"}
+        height={13}
+        width={13}
+      />
 
       <p className="mb-4 mt-4 text-[1.7rem] font-medium">
         {firstName || "Quick"} {lastName || "Quack"}
@@ -50,9 +67,9 @@ function UserProfileHeader({ username }) {
       </div>
 
       <div className="mt-4 border-t-2 border-slate-300">
-        <p className="pt-2 text-[1.3rem] font-normal">
+        <div className="whitespace-pre-line pt-2 text-left text-[1.4rem] font-medium">
           {bio || "Building something amazing!"}
-        </p>
+        </div>
       </div>
     </div>
   );
