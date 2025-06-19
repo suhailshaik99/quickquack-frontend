@@ -21,7 +21,7 @@ function ProfileViewer() {
       </button>
 
       {/* Profile Image Box */}
-      <div className="h-[30rem] w-[30rem] overflow-hidden rounded-[4rem] bg-sky-200 shadow-lg">
+      <div className="h-[36rem] w-[36rem] overflow-hidden rounded-full bg-sky-200 shadow-lg sm:h-[50rem] sm:w-[50rem]">
         <img
           src={profilePictureURL}
           alt="Profile"

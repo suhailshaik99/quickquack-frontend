@@ -1,20 +1,25 @@
 // Library Imports
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // Local Imports
 import Story from "../Stories/Story";
 import useQueryFn from "../../hooks/useQuery";
+import { setProfileViewer } from "../Profile/profileSlice";
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";
 
 function UserProfileHeader({ username }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     data: userProfileDetails,
     isLoading,
     isError,
     error,
-  } = useQueryFn(["userProfileDetails", username], getUserProfileDetails, {retry: false});
+  } = useQueryFn(["userProfileDetails", username], getUserProfileDetails, {
+    retry: false,
+  });
   const {
     bio,
     firstName,
@@ -24,6 +29,10 @@ function UserProfileHeader({ username }) {
     followingCount,
     postsCount,
   } = userProfileDetails || {};
+
+  function handleProfileClick() {
+    dispatch(setProfileViewer(profilePicture));
+  }
 
   useEffect(() => {
     if (
@@ -38,11 +47,13 @@ function UserProfileHeader({ username }) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <Story
-        profilePicture={profilePicture || "/DEFAULT_PROFILE.png"}
-        height={13}
-        width={13}
-      />
+      <div className="hover:cursor-pointer" onClick={handleProfileClick}>
+        <Story
+          profilePicture={profilePicture || "/DEFAULT_PROFILE.png"}
+          height={13}
+          width={13}
+        />
+      </div>
 
       <p className="mb-4 mt-4 text-[1.7rem] font-medium">
         {firstName || "Quick"} {lastName || "Quack"}
