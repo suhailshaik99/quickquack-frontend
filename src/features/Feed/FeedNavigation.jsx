@@ -35,9 +35,12 @@ function handleRequestsClick(dispatch) {
 }
 
 function FeedNavigation() {
+  // Redux Hooks
   const dispatch = useDispatch();
   const unreadMessages = useSelector((state) => state.message.unreadMessages);
   const unreadMessagesCount = Object.entries(unreadMessages).length;
+  const connectionRequestsCount = useSelector((state) => state.requests.connectionRequestsCount);
+
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
       <NavLink to="/">
@@ -76,7 +79,14 @@ function FeedNavigation() {
       <NavLink onClick={() => handleRequestsClick(dispatch)}>
         <NavlinkItem>
           <FaUserPlus />
-          <span>Requests</span>
+          <div className="relative flex items-center gap-2">
+            <span>Requests</span>
+            {connectionRequestsCount > 0 && (
+              <span className="absolute -right-3 top-1 inline-flex h-7 w-7 -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-sky-500 text-[1.2rem] font-bold text-white">
+                {connectionRequestsCount}
+              </span>
+            )}
+          </div>
         </NavlinkItem>
       </NavLink>
       <NavLink onClick={() => handlePostClick(dispatch)}>
@@ -91,12 +101,6 @@ function FeedNavigation() {
           <span>Notifications</span>
         </NavlinkItem>
       </NavLink>
-      {/* <NavLink to="/settings">
-        <NavlinkItem>
-          <IoSettings />
-          <span>Settings</span>
-        </NavlinkItem>
-      </NavLink> */}
       <NavLink to="/logout">
         <NavlinkItem>
           <FaSignOutAlt />

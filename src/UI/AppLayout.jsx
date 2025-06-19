@@ -10,13 +10,13 @@ import CreatePost from "../features/Posts/CreatePost";
 import FriendsBox from "../features/Profile/FriendsBox";
 import MessageBox from "../features/Messages/MessageBox";
 import MobileFeedNav from "../features/Feed/MobileFeedNav";
+import PostsCarousel from "../features/Posts/PostsCarousel";
 import CommentsList from "../features/Comments/CommentsList";
 import ProfileEditBox from "../features/Profile/ProfileEditBox";
 import MobileFeedHeader from "../features/Feed/MobileFeedHeader";
 import RequestsBox from "../features/ConnectionRequests/RequestsBox";
 import ProfileOptionsBox from "../features/Profile/ProfileOptionsBox";
 import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
-import PostsCarousel from "../features/Posts/PostsCarousel";
 
 function AppLayout() {
   const { openCarousel } = useSelector((state) => state.post);

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 // Local Imports
 import Story from "../Stories/Story";
+import { useSocket } from "../../contexts/socketContext";
 import { useCancelReq, useSendReq } from "../../hooks/useSendCancelReq";
 
 const buttonStyles =
@@ -20,9 +21,10 @@ function CancelButton({ userId, handleDeleteRequest }) {
 }
 
 function PeopleBrief({ userId, username, profilePicture, requested }) {
+  const socket = useSocket();
   const navigate = useNavigate();
-  const { mutate: sendReqFn, isPending: pendingSend } = useSendReq();
-  const { mutate: cancelReqFn, isPending: pendingDelete } = useCancelReq();
+  const { mutate: sendReqFn } = useSendReq();
+  const { mutate: cancelReqFn } = useCancelReq();
 
   // onClick Handler functions
   // F1
@@ -34,6 +36,7 @@ function PeopleBrief({ userId, username, profilePicture, requested }) {
   // F2
   function handleSendRequest(userId) {
     sendReqFn(userId);
+    socket.emit("send-friend-request", userId);
     return;
   }
 

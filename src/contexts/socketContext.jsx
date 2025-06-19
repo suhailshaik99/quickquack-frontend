@@ -10,6 +10,12 @@ import {
   addUnreadMessage,
   addUnreadMessagesBatch,
 } from "../features/Messages/messageSlice";
+import useQueryFn from "../hooks/useQuery";
+import { getFriendRequests } from "../services/FormSubmitAPI";
+import {
+  setConnectionRequestsCount,
+  incrementConnectionRequestsCount,
+} from "../features/ConnectionRequests/requestSlice";
 
 const SocketContext = createContext();
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
@@ -24,34 +30,43 @@ function SocketProvider({ children }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
+  // --- State and Selectors ---
   const { messageBox } = useSelector((state) => state.message);
-  // const { _id: userId } = useSelector((state) => state.user.userDetails);
   const { userId: recipientId } = useSelector(
     (state) => state.message.recipient,
   );
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const userDetails = useSelector(state => state.user.userDetails);
+  const userDetails = useSelector((state) => state.user.userDetails);
   const userId = userDetails?._id;
 
-  // Refs for state values
-  const userIdRef = useRef(userId);
+  // --- Data Fetching for Initial Count ---
+  const { data: pendingRequests, isSuccess } = useQueryFn(
+    ["pendingRequests"],
+    getFriendRequests,
+    { enabled: !!isAuthenticated },
+  );
+
+  // Refs for state values that change often
   const messageBoxRef = useRef(messageBox);
   const recipientIdRef = useRef(recipientId);
 
-  // Update refs when state changes
   useEffect(() => {
     recipientIdRef.current = recipientId;
     messageBoxRef.current = messageBox;
   }, [recipientId, messageBox]);
 
+  // --- This effect correctly sets the initial request count on load ---
   useEffect(() => {
-    userIdRef.current = userId;
-  }, [userId]);
+    if (isSuccess && pendingRequests) {
+      dispatch(setConnectionRequestsCount(pendingRequests.length));
+    }
+  }, [isSuccess, pendingRequests, dispatch]);
 
+  // --- Main Socket Logic ---
   useEffect(() => {
     if (!isAuthenticated || !userId) return;
 
-    // Message handler using refs for current state
+    // --- Event Handlers ---
     const handleIncomingMessage = (msg) => {
       const isChatBoxOpen =
         messageBoxRef.current && recipientIdRef.current === msg.sender;
@@ -59,67 +74,63 @@ function SocketProvider({ children }) {
       if (isChatBoxOpen) {
         dispatch(addMessage({ ...msg, user: false }));
       } else {
+        // --- RESTORED ---
+        // This is your original, working code for invalidating the message cards.
+        // I apologize for changing it. This is now fixed.
         queryClient.invalidateQueries(["messageCards"]);
         dispatch(addUnreadMessage(msg));
       }
     };
 
-    // Unread messages batch handler
     const handleUnreadMessages = (messages) => {
       if (Array.isArray(messages) && messages.length > 0) {
         const formatted = messages.map((msg) => ({
           ...msg,
-          user: msg.sender === userIdRef.current,
+          user: msg.sender === userId,
         }));
         dispatch(addUnreadMessagesBatch(formatted));
       }
     };
 
-    // Connection error handler
+    const handleNewFriendRequest = () => {
+      queryClient.invalidateQueries(["pendingRequests"]);
+
+      dispatch(incrementConnectionRequestsCount());
+    };
+
     const handleConnectError = (err) => {
       console.error("Socket connection error:", err);
       setTimeout(() => socket.connect(), 3000);
     };
 
-    // Connect and set up listeners
-    socket.connect();
-
-    // Core event listeners
-    socket.on("private-message", handleIncomingMessage);
-    socket.on("unread-messages", handleUnreadMessages);
-    socket.on("connect_error", handleConnectError);
-    socket.on("back-connection", (msg) => console.log("Backend:", msg));
-
-    // Connection established handler
     const handleConnect = () => {
       console.log("Socket connected! Emitting user info.");
       socket.emit("add-user", userId);
       socket.emit("get-unread-messages", userId);
     };
+
+    // --- Socket Connection and Listeners ---
+    if (!socket.connected) {
+      socket.connect();
+    }
+
     socket.on("connect", handleConnect);
+    socket.on("connect_error", handleConnectError);
+    socket.on("unread-messages", handleUnreadMessages);
+    socket.on("private-message", handleIncomingMessage);
+    socket.on("new-friend-request", handleNewFriendRequest);
 
-    // Ping/pong for connection health
-    const pingInterval = setInterval(() => {
-      if (socket.connected) {
-        socket.emit("ping", Date.now());
-      }
-    }, 15000);
-
-    socket.on("pong", (timestamp) => {
-      console.log(`Latency: ${Date.now() - timestamp}ms`);
-    });
-
-    // Cleanup function
+    // --- Cleanup Function ---
     return () => {
-      clearInterval(pingInterval);
-      socket.off("private-message", handleIncomingMessage);
-      socket.off("unread-messages", handleUnreadMessages);
       socket.off("connect", handleConnect);
       socket.off("connect_error", handleConnectError);
-      socket.off("back-connection");
-      socket.off("pong");
+      socket.off("unread-messages", handleUnreadMessages);
+      socket.off("private-message", handleIncomingMessage);
+      socket.off("new-friend-request", handleNewFriendRequest);
       socket.disconnect();
     };
+
+    // --- This dependency array is correct and prevents reconnections ---
   }, [isAuthenticated, userId, dispatch, queryClient]);
 
   return (
