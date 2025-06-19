@@ -13,8 +13,8 @@ const store = configureStore({
     user: userReducer,
     post: postReducer,
     profile: profileReducer,
+    message: messageReducer,
     requests: requestsReducer,
-    message: messageReducer
   },
 });
 

@@ -22,7 +22,6 @@ function useLikePost() {
       return { oldPosts };
     },
     onError: (err, postId, context) => {
-      console.log(err.message);
       queryClient.setQueryData(["posts"], context.oldPosts);
     },
     onSettled: () => {
@@ -49,7 +48,6 @@ function useUnlikePost() {
       return { oldPosts };
     },
     onError: (err, postId, context) => {
-      console.log(err.message);
       queryClient.setQueryData(["posts"], context.oldPosts);
     },
     onSettled: () => {

@@ -172,7 +172,6 @@ async function createUnlike(postId) {
     }
     return response.data;
   } catch (error) {
-    console.log(error);
     const errorMessage =
       error?.response?.data?.message || "Error unliking the post...";
     throw new Error(errorMessage);
@@ -279,7 +278,6 @@ async function updateProfileDetails(data) {
     }
     return response.data;
   } catch (error) {
-    console.log(error.response.data);
     const errorMessage =
       error?.response?.data?.message || "Unable to update profile details";
     throw new Error(errorMessage);
@@ -322,7 +320,6 @@ async function sendFriendRequest(recipient) {
   } catch (error) {
     const errorMessage =
       error?.response?.data?.message || "Unable to send request at the moment";
-    console.log(errorMessage);
     throw new Error(errorMessage);
   }
 }

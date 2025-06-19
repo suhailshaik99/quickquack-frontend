@@ -123,10 +123,6 @@ function ProfileEditForm() {
     mutate(formData);
   }
 
-  function onError(errors) {
-    console.log(errors);
-  }
-
   function handleRemoveProfilePicture() {
     setSelectedImage("/DEFAULT_PROFILE.png");
     setIsProfileRemoved(true);
@@ -162,7 +158,7 @@ function ProfileEditForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onSubmit)}
       encType="multipart/form-data"
     >
       <div className="grid grid-cols-2 gap-4 px-5 py-2 pb-3">

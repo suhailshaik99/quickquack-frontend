@@ -4,25 +4,31 @@ import { useSelector } from "react-redux";
 
 // Local Imports
 import useAuth from "../hooks/useAuth";
+import ProfileViewer from "./ProfileViewer";
 import FeedAside from "../features/Feed/FeedAside";
 import CreatePost from "../features/Posts/CreatePost";
 import FriendsBox from "../features/Profile/FriendsBox";
 import MessageBox from "../features/Messages/MessageBox";
 import MobileFeedNav from "../features/Feed/MobileFeedNav";
 import CommentsList from "../features/Comments/CommentsList";
+import ProfileEditBox from "../features/Profile/ProfileEditBox";
 import MobileFeedHeader from "../features/Feed/MobileFeedHeader";
 import RequestsBox from "../features/ConnectionRequests/RequestsBox";
-import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
-import ProfileEditBox from "../features/Profile/ProfileEditBox";
 import ProfileOptionsBox from "../features/Profile/ProfileOptionsBox";
-import ProfileViewer from "./ProfileViewer";
+import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
+import PostsCarousel from "../features/Posts/PostsCarousel";
 
 function AppLayout() {
+  const { openCarousel } = useSelector((state) => state.post);
   const { messageBox } = useSelector((state) => state.message);
   const { openRequestsBox } = useSelector((state) => state.requests);
   const { openPostBox, openCommentsList } = useSelector((state) => state.post);
-  const { openFriendsBox, viewProfileEditBox, profileOptionsBox, profileViewer } =
-    useSelector((state) => state.profile);
+  const {
+    openFriendsBox,
+    viewProfileEditBox,
+    profileOptionsBox,
+    profileViewer,
+  } = useSelector((state) => state.profile);
   useAuth();
 
   return (
@@ -31,6 +37,7 @@ function AppLayout() {
       {messageBox && <MessageBox />}
       {openPostBox && <CreatePost />}
       {openFriendsBox && <FriendsBox />}
+      {openCarousel && <PostsCarousel />}
       {openRequestsBox && <RequestsBox />}
       {profileViewer && <ProfileViewer />}
       {openCommentsList && <CommentsList />}

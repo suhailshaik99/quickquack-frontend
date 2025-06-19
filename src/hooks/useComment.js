@@ -23,7 +23,6 @@ export default function useComment() {
     },
 
     onError: (err, postId, context) => {
-      console.log(err);
       queryClient.setQueryData(["posts"], context.oldPosts);
     },
 

@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   viewFollowers: false,
   viewFollowing: false,
+  profileViewer: false,
   openFriendsBox: false,
+  profilePictureURL: "",
   profileOptionsBox: false,
   viewProfileEditBox: false,
-  profileViewer: false,
-  profilePictureURL: "",
 };
 
 const profileSlice = createSlice({

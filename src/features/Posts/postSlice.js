@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   postId: null,
+  carouselPostId: 0,
   openPostBox: false,
+  openCarousel: false,
   openCommentsList: false,
 };
 
@@ -30,6 +32,16 @@ const postSlice = createSlice({
     clearPostId(state) {
       state.postId = null;
     },
+
+    setCarousel(state) {
+      state.openCarousel = !state.openCarousel;
+    },
+    setCarouselPostId(state, action) {
+      state.carouselPostId = action.payload;
+    },
+    clearCarouselPostId(state) {
+      state.carouselPostId = null;
+    },
   },
 });
 
@@ -39,6 +51,9 @@ export const {
   closeBox,
   setPostId,
   clearPostId,
+  setCarousel,
+  setCarouselPostId,
   openCommentsListBox,
+  clearCarouselPostId,
   closeCommentsListBox,
 } = postSlice.actions;
