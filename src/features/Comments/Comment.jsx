@@ -6,20 +6,20 @@ function Comment({ comment }) {
     userId: { profilePicture, username },
   } = comment;
   return (
-    <div className="flex gap-3 py-2">
+    <div className="flex gap-4 px-5 py-2">
       <div className="flex-shrink-0">
-        <Story height={3.5} width={3.5} profilePicture={profilePicture} />
+        <Story height={5} width={5} profilePicture={profilePicture} />
       </div>
 
-      <div className="flex flex-col gap-2 text-[1.4rem]">
-        <p className="flex flex-wrap">
+      <div className="flex flex-col justify-center gap-1 text-[1.4rem]">
+        <div className="flex flex-wrap">
           <span className="mr-2 font-semibold">{username || "username"}</span>
           &nbsp;&nbsp;
           <span className="font-medium text-slate-800">
             {commentText ||
               "comment here comment here comment here comment here comment here comment here comment here"}
           </span>
-        </p>
+        </div>
         <p className="text-xl font-medium">2h</p>
       </div>
     </div>

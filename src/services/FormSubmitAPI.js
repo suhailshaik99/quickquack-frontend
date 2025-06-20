@@ -136,6 +136,23 @@ async function createPost(data) {
   }
 }
 
+async function deletePost(data) {
+  try {
+    const response = await axios.delete(import.meta.env.VITE_DELETE_POST_URL, {
+      data,
+      withCredentials: true,
+    });
+    if (!response.data.success) {
+      throw new Error(response?.data?.message || "Trouble deleting post...");
+    }
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Trouble deleting post...";
+    throw new Error(errorMessage);
+  }
+}
+
 async function createLike(postId) {
   const likePostUrl = import.meta.env.VITE_LIKE_POST_URL.replace(
     ":postId",
@@ -504,6 +521,7 @@ export {
   createPost,
   createLike,
   getFriends,
+  deletePost,
   getComments,
   createUnlike,
   unfollowUser,

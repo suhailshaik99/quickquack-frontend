@@ -7,9 +7,14 @@ import AddDetailsForm from "./AddDetailsForm";
 import UploadImageForm from "./UploadImageForm";
 import useMutationFunc from "../../hooks/useMutation";
 import { createPost } from "../../services/FormSubmitAPI";
+import { useDispatch } from "react-redux";
+import { closeBox } from "./postSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 function CreatePost() {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(1);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -27,7 +32,12 @@ function CreatePost() {
     formData.append("location", data.location);
     formData.append("description", data.description);
     formData.append("postUpload", data.postUpload[0]);
-    mutate(formData);
+    mutate(formData, {
+      onSuccess: () => {
+        dispatch(closeBox());
+        queryClient.invalidateQueries(["posts"]);
+      }
+    });
   }
 
   return (

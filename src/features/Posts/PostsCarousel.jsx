@@ -1,7 +1,10 @@
 // Library Imports
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Icon Imports
+import { RxCross2 } from "react-icons/rx";
+import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 
 // Local Imports
@@ -14,11 +17,16 @@ import {
 import Comment from "../Comments/Comment";
 import useQueryFn from "../../hooks/useQuery";
 import CommentBox from "../Comments/CommentBox";
-import { getComments } from "../../services/FormSubmitAPI";
+import useMutationFunc from "../../hooks/useMutation";
+import { deletePost, getComments } from "../../services/FormSubmitAPI";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PostsCarousel = () => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const [postOptions, setPostOptions] = useState(false);
 
+  const { _id: userId } = useSelector((state) => state.user.userDetails);
   const { carouselPostId, carouselPosts: posts } = useSelector(
     (state) => state.post,
   );
@@ -26,9 +34,14 @@ const PostsCarousel = () => {
   const currentIndex = posts?.findIndex((p) => p._id === carouselPostId);
   const currentPost = posts?.[currentIndex];
 
-  const { data: comments = [], isPending } = useQueryFn(
+  const { data: comments = [], isPending: loadingComments } = useQueryFn(
     ["comments", carouselPostId],
     getComments,
+  );
+  const [mutate] = useMutationFunc(
+    deletePost,
+    "Post Deleted Successfully",
+    "Error Deleting Post",
   );
 
   const handleClose = () => {
@@ -49,13 +62,67 @@ const PostsCarousel = () => {
     }
   };
 
+  const handlePostOptions = () => {
+    setPostOptions((prev) => !prev);
+  };
+
+  const handlePostDelete = () => {
+    const data = {
+      userId,
+      postId: currentPost._id,
+    };
+    mutate(data, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["profilePosts"]);
+        queryClient.invalidateQueries(["ProfileDetails"]);
+        dispatch(setCarousel());
+      },
+      onError: (error) => {
+        console.error("Failed to delete post:", error);
+      },
+    });
+  };
+
   if (!currentPost) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-3 backdrop-blur-sm">
       <div className="relative flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl bg-white shadow-lg md:grid md:h-[80vh] md:grid-cols-2">
         {/* Left: Post Image */}
-        <div className="flex h-1/2 items-center justify-center bg-sky-200 p-2 md:h-full">
+        <div className="relative flex h-1/2 items-center justify-center bg-sky-200 p-2 md:h-full">
+          {userId === currentPost.postedBy && (
+            <>
+              {!postOptions && (
+                <div
+                  className="absolute right-2 top-14 rounded-full p-1 outline-none hover:cursor-pointer focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 md:top-2"
+                  tabIndex={0}
+                  onClick={handlePostOptions}
+                >
+                  <HiEllipsisHorizontal size={28} />
+                </div>
+              )}
+              {postOptions && (
+                <div className="absolute right-2 top-14 z-10 flex h-[auto] w-[auto] flex-col gap-4 rounded-md bg-sky-400 p-3 shadow-lg hover:cursor-pointer md:top-2">
+                  <div className="flex h-auto justify-end rounded-full">
+                    <div
+                      className="rounded-full bg-sky-200 p-1"
+                      onClick={handlePostOptions}
+                    >
+                      <RxCross2 size={18} />
+                    </div>
+                  </div>
+                  <ul className="text-center text-2xl font-medium text-gray-700">
+                    <li
+                      className="rounded-xl px-6 py-3 transition-all duration-300 hover:bg-sky-200"
+                      onClick={handlePostDelete}
+                    >
+                      Delete Post
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </>
+          )}
           <img
             src={currentPost.postUrl}
             alt="Post"
@@ -70,7 +137,7 @@ const PostsCarousel = () => {
             <h2 className="mb-2 text-center text-3xl font-semibold">
               Comments
             </h2>
-            {isPending ? (
+            {loadingComments ? (
               <div className="flex h-full items-center justify-center">
                 <p className="text-gray-500">Loading comments...</p>
               </div>
