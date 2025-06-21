@@ -24,13 +24,13 @@ function Header() {
         <div className="mr-7 flex space-x-3">
           <NavLink
             to="/login"
-            classes="sm:px-6 px-3 sm:py-4 py-2 font-semibold hover:bg-gradient-to-r hover:from-teal-400 hover:to-blue-500 hover:rounded-xl transition duration-700 sm:text-4xl text-3xl hover:text-white"
+            classes="sm:px-6 px-3 sm:py-4 py-2 font-semibold hover:bg-gradient-to-r hover:from-teal-400 hover:to-blue-500 hover:rounded-xl transition-all duration-300 sm:text-4xl text-3xl hover:text-white"
           >
             Login
           </NavLink>
           <NavLink
             to="/signup"
-            classes="bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-xl sm:px-6 px-3 sm:py-4 py-2 font-semibold sm:text-3xl text-2xl hover:from-pink-500 hover:to-orange-500 transition duration-800"
+            classes="bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-xl sm:px-6 px-3 sm:py-4 py-2 font-semibold sm:text-3xl text-2xl hover:from-pink-500 hover:to-orange-500 transition-all duration-300"
           >
             Sign Up
           </NavLink>

@@ -15,7 +15,7 @@ const gridStyles = "grid grid-cols-3 gap-2";
 
 function ProfilePosts() {
   const dispatch = useDispatch();
-  const {data, isPending } = useQueryFn("profilePosts", getProfileDetails);
+  const { data, isPending } = useQueryFn("profilePosts", getProfileDetails);
 
   const { posts = [], postsCount = 0 } = data || {};
 

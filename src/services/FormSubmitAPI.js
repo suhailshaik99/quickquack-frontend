@@ -516,6 +516,22 @@ async function getUserMessages({ queryKey }) {
   }
 }
 
+async function searchUsers(username) {
+  const url = import.meta.env.VITE_SEARCH_USERS_URL.replace("userName", username);
+  try {
+    const response = await axios.get(url, { withCredentials: true });
+    if (!response.data.success) {
+      throw new Error("Error fetching results");
+    }
+    return response?.data?.searchResults;
+  } catch (error) {
+    console.log(error.response.data);
+    const errorMessage =
+      error?.response?.data?.message || "Error fetching results..";
+    throw new Error(errorMessage);
+  }
+}
+
 export {
   getPosts,
   createPost,
@@ -523,6 +539,7 @@ export {
   getFriends,
   deletePost,
   getComments,
+  searchUsers,
   createUnlike,
   unfollowUser,
   createComment,

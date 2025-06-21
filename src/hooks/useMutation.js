@@ -10,7 +10,7 @@ function useMutationFunc(
   isLogin = false,
 ) {
   const dispatch = useDispatch();
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, data, isPending, isSuccess } = useMutation({
     mutationFn: apiFunc,
     onSuccess: (data) => {
       if (successMessage) {
@@ -28,7 +28,7 @@ function useMutationFunc(
       }
     },
   });
-  return [mutate, isPending, isSuccess];
+  return [mutate, isPending, isSuccess, data];
 }
 
 export default useMutationFunc;
