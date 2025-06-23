@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 // Local Imports
 import AppLayout from "./UI/AppLayout";
 import FeedPage from "./pages/FeedPage";
 import LoginPage from "./pages/LoginPage";
+import DuckLoader from "./UI/DuckLoader";
 import Home from "./pages/AppOverviewPage";
 import SignupPage from "./pages/SignupPage";
 import SearchPage from "./pages/SearchPage";
@@ -27,7 +27,9 @@ const queryClient = new QueryClient();
 
 function App() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, isAuthenticating } = useSelector(
+    (state) => state.user,
+  );
 
   useEffect(
     function () {
@@ -35,11 +37,10 @@ function App() {
     },
     [dispatch],
   );
-
+ 
   return (
     <QueryClientProvider client={queryClient}>
       <SocketProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
         <Toaster
           position="top-center"
           gutter={12}
@@ -61,6 +62,7 @@ function App() {
           }}
         />
         <BrowserRouter>
+          {isAuthenticating && <DuckLoader />}
           <Routes>
             <Route element={isAuthenticated ? <AppLayout /> : <Home />}>
               <Route path="/" element={<FeedPage />} />

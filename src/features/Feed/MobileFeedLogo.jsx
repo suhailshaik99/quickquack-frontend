@@ -12,6 +12,9 @@ import { setViewProfileOptionsBox } from "../Profile/profileSlice";
 
 function MobileFeedLogo() {
   const dispatch = useDispatch();
+  const unreadNotificationsCount = useSelector(
+    (state) => state.notifications.unreadNotificationsCount,
+  );
   const unreadChats = useSelector((state) => state.message.unreadMessages);
   const unreadChatsCount = Object.entries(unreadChats).length;
 
@@ -36,9 +39,20 @@ function MobileFeedLogo() {
           )}
         </Link>
         <Link to={"/notifications"}>
-          <IoMdNotifications size={27} />
+          <div>
+            <IoMdNotifications size={27} />
+            {unreadNotificationsCount > 0 && (
+              <span className="absolute right-28 top-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-sky-500 text-[1.2rem] font-bold text-white">
+                {unreadNotificationsCount}
+              </span>
+            )}
+          </div>
         </Link>
-        <GiHamburgerMenu size={25} className="hover:cursor-pointer" onClick={handleProfileOptionsClick}/>
+        <GiHamburgerMenu
+          size={25}
+          className="hover:cursor-pointer"
+          onClick={handleProfileOptionsClick}
+        />
       </div>
     </div>
   );

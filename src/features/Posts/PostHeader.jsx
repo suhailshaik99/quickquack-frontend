@@ -1,9 +1,5 @@
-import { useSelector } from "react-redux";
-
-function PostHeader() {
-  const { username, profilePicture } = useSelector(
-    (state) => state.user.userDetails,
-  );
+function PostHeader({postedBy}) {
+  const {username, profilePicture} = postedBy;
   return (
     <div className="mb-3 flex items-center gap-4">
       <div className="h-[4rem] w-[4rem] overflow-hidden rounded-[50%] border-2">

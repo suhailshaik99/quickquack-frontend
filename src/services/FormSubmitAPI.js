@@ -517,7 +517,10 @@ async function getUserMessages({ queryKey }) {
 }
 
 async function searchUsers(username) {
-  const url = import.meta.env.VITE_SEARCH_USERS_URL.replace("userName", username);
+  const url = import.meta.env.VITE_SEARCH_USERS_URL.replace(
+    "userName",
+    username,
+  );
   try {
     const response = await axios.get(url, { withCredentials: true });
     if (!response.data.success) {
@@ -525,9 +528,42 @@ async function searchUsers(username) {
     }
     return response?.data?.searchResults;
   } catch (error) {
-    console.log(error.response.data);
     const errorMessage =
       error?.response?.data?.message || "Error fetching results..";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getNotifications() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_GET_NOTIFICATIONS_URL,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error("Error fetching notifications");
+    }
+    return response?.data?.notifications;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Error fetching notifications..";
+    throw new Error(errorMessage);
+  }
+}
+
+async function getUnreadCount() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_GET_NOTIFICATIONS_COUNT_URL,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error("Error fetching notifications count");
+    }
+    return response?.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Error fetching notifications count..";
     throw new Error(errorMessage);
   }
 }
@@ -543,9 +579,11 @@ export {
   createUnlike,
   unfollowUser,
   createComment,
+  getUnreadCount,
   removeFollower,
   getMessageCards,
   getUserMessages,
+  getNotifications,
   authenticateUser,
   getProfileDetails,
   getFriendRequests,

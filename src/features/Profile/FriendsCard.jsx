@@ -71,7 +71,7 @@ function FriendsCard({ userId, username, profilePicture }) {
       >
         <Story height={5} width={5} profilePicture={profilePicture} />
         <div className="">
-          <p className="text-xl font-semibold tracking-wide text-slate-700 sm:text-2xl">
+          <p className="text-xl font-semibold tracking-wide break-words text-slate-700 sm:text-2xl">
             {username || "username"}
           </p>
         </div>

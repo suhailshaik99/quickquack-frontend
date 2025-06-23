@@ -8,7 +8,7 @@ function ProfileTabs() {
   const [activeTab, setActiveTab] = useState("posts");
   return (
     <div className="mt-12 border-t border-gray-300">
-      <div className="flex justify-center gap-[8rem] pt-4 text-sm font-semibold text-gray-500">
+      <div className="flex justify-center gap-[4rem] sm:gap-[8rem] pt-4 text-sm font-semibold text-gray-500">
         <button
           onClick={() => setActiveTab("posts")}
           className={`${iconStyles} ${

@@ -31,7 +31,7 @@ function MobileFeedNav() {
   }
 
   return (
-    <nav className="sm:hidden">
+    <nav className="w-full bg-sky-50 border-t shadow-md sm:hidden">
       <ul className="flex justify-between gap-3 p-4">
         <NavLink to={"/"}>
           <NavLinkItem>

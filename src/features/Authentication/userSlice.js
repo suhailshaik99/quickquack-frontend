@@ -7,7 +7,7 @@ import { verifyUserAuthentication } from "../../services/FormSubmitAPI";
 const initialState = {
   userDetails: {},
   isAuthenticated: false,
-  isAuthenticating: true,
+  isAuthenticating: false,
 };
 
 const userSlice = createSlice({

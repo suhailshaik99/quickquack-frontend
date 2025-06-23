@@ -1,7 +1,11 @@
+// Library Imports
 import { useRef, useState } from "react";
+
+// Local Imports
 import UserCards from "./UserCards";
-import { searchUsers } from "../../services/FormSubmitAPI";
+import DuckLoader from "../../UI/DuckLoader";
 import useMutationFunc from "../../hooks/useMutation";
+import { searchUsers } from "../../services/FormSubmitAPI";
 
 function SearchBar() {
   let searchString;
@@ -28,8 +32,9 @@ function SearchBar() {
     );
   };
 
+  // h-[calc(100%-7rem)] grow
   return (
-    <div className="flex h-[calc(100%-7rem)] grow flex-col gap-4 pt-2">
+    <div className="flex flex-col flex-1 gap-4 pt-2 ">
       <div className="flex items-center gap-3">
         <input
           id="search"
@@ -48,7 +53,7 @@ function SearchBar() {
           Search
         </button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border-2 border-gray-200 bg-sky-100 p-2 shadow-md sm:p-4">
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl shadow-gray-400 bg-sky-100 p-2 shadow-md sm:p-4 ">
         <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-2 sm:place-items-center sm:px-4 md:grid-cols-3 md:place-items-center md:gap-4 md:gap-y-16">
           {isPending && <p>loading...</p>}
           {data?.length == 0 ? <p>No users found</p> : ""}
@@ -59,6 +64,7 @@ function SearchBar() {
               updateUserCard={updateUserCard}
             />
           ))}
+          {/* <DuckLoader /> */}
         </div>
       </div>
     </div>

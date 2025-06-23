@@ -45,17 +45,14 @@ function AppLayout() {
       {profileOptionsBox && <ProfileOptionsBox />}
 
       {/* Main Grid Layout */}
-      <div className="grid h-full grid-cols-1 grid-rows-[auto_1fr_auto] divide-x bg-sky-50 sm:grid-cols-[auto_1fr] lg:grid-cols-[auto_5fr_3fr]">
+      <div className="grid h-full grid-cols-1 grid-rows-[auto_1fr_auto] divide-x bg-sky-50 sm:grid-cols-[auto_1fr] sm:grid-rows-1 md:grid-cols-[auto_1fr] md:grid-rows-1 lg:grid-cols-[auto_1fr_auto]">
         <FeedAside />
         <MobileFeedHeader />
         <main className="flex h-full flex-shrink-0 justify-center overflow-y-auto">
-          <div className="flex h-full w-full justify-center overflow-y-auto">
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
-        <section className="bottom-2 hidden place-items-center gap-2 p-3 lg:grid">
+        <section className="hidden place-items-center px-2 lg:grid">
           <SuggestedUsersBox />
-          {/* <OnlineUsersBox /> */}
         </section>
         <MobileFeedNav />
       </div>

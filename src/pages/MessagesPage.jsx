@@ -10,12 +10,14 @@ function MessagesPage() {
   );
 
   return (
-    <div className="flex h-full w-full flex-col gap-3 overflow-y-auto px-3 py-10">
+    <div className="flex h-full w-full flex-col gap-3 overflow-y-auto px-5 sm:px-3 sm:pb-2 sm:pt-10">
       {isPending && <p>Loading message cards...</p>}
-      <h1 className="px-5 pb-10 text-6xl font-bold">Messages</h1>
-      {messages?.map((msg) => {
-        return <MessageCard key={msg.otherUserId} msg={msg} />;
-      })}
+      <h1 className="pb-5 text-6xl font-bold sm:px-5">Messages</h1>
+      <div className="flex flex-col gap-4 overflow-y-auto sm:gap-5">
+        {messages?.map((msg) => {
+          return <MessageCard key={msg.otherUserId} msg={msg} />;
+        })}
+      </div>
     </div>
   );
 }

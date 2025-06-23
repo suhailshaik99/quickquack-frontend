@@ -53,7 +53,7 @@ function UploadImageForm({ setStep, register, errors, trigger }) {
     }
   }
   return (
-    <div className="flex h-[50rem] w-[39rem] sm:w-[45rem] flex-col gap-[5rem] rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md">
+    <div className="flex h-[50rem] w-[36rem] sm:w-[45rem] flex-col gap-[5rem] rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md">
       <div className="flex items-center justify-between border-b-2 border-slate-300 px-5">
         <ImCross
           size={18}

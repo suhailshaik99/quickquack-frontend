@@ -11,11 +11,12 @@ import {
   addUnreadMessagesBatch,
 } from "../features/Messages/messageSlice";
 import useQueryFn from "../hooks/useQuery";
-import { getFriendRequests } from "../services/FormSubmitAPI";
 import {
   setConnectionRequestsCount,
   incrementConnectionRequestsCount,
 } from "../features/ConnectionRequests/requestSlice";
+import { getFriendRequests, getUnreadCount } from "../services/FormSubmitAPI";
+import { setUnreadNotificationsCount } from "../features/Notifications/notificationSlice";
 
 const SocketContext = createContext();
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
@@ -46,6 +47,13 @@ function SocketProvider({ children }) {
     { enabled: !!isAuthenticated },
   );
 
+  // Fetching unread count initially
+  const { data: unreadCountData, isSuccess: notificationsSuccess } = useQueryFn(
+    ["unreadNotificationsCount"],
+    getUnreadCount,
+    { enabled: !!isAuthenticated },
+  );
+
   // Refs for state values that change often
   const messageBoxRef = useRef(messageBox);
   const recipientIdRef = useRef(recipientId);
@@ -62,6 +70,12 @@ function SocketProvider({ children }) {
     }
   }, [isSuccess, pendingRequests, dispatch]);
 
+  useEffect(() => {
+  if (notificationsSuccess && unreadCountData) {
+    dispatch(setUnreadNotificationsCount(unreadCountData.unreadCount));
+  }
+}, [notificationsSuccess, unreadCountData, dispatch]);
+
   // --- Main Socket Logic ---
   useEffect(() => {
     if (!isAuthenticated || !userId) return;
@@ -74,9 +88,6 @@ function SocketProvider({ children }) {
       if (isChatBoxOpen) {
         dispatch(addMessage({ ...msg, user: false }));
       } else {
-        // --- RESTORED ---
-        // This is your original, working code for invalidating the message cards.
-        // I apologize for changing it. This is now fixed.
         queryClient.invalidateQueries(["messageCards"]);
         dispatch(addUnreadMessage(msg));
       }
@@ -94,7 +105,6 @@ function SocketProvider({ children }) {
 
     const handleNewFriendRequest = () => {
       queryClient.invalidateQueries(["pendingRequests"]);
-
       dispatch(incrementConnectionRequestsCount());
     };
 
@@ -102,6 +112,11 @@ function SocketProvider({ children }) {
       console.error("Socket connection error:", err);
       setTimeout(() => socket.connect(), 3000);
     };
+
+    const handleRefreshNotifications = () => {
+      console.log("Notification received about refreshing the notifications feed");
+      queryClient.invalidateQueries(["unreadNotificationsCount"]);
+    }
 
     const handleConnect = () => {
       console.log("Socket connected! Emitting user info.");
@@ -119,6 +134,7 @@ function SocketProvider({ children }) {
     socket.on("unread-messages", handleUnreadMessages);
     socket.on("private-message", handleIncomingMessage);
     socket.on("new-friend-request", handleNewFriendRequest);
+    socket.on("refresh-notifications", handleRefreshNotifications);
 
     // --- Cleanup Function ---
     return () => {
@@ -130,7 +146,6 @@ function SocketProvider({ children }) {
       socket.disconnect();
     };
 
-    // --- This dependency array is correct and prevents reconnections ---
   }, [isAuthenticated, userId, dispatch, queryClient]);
 
   return (

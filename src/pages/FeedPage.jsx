@@ -8,7 +8,6 @@ import FeedStories from "../features/Stories/FeedStories";
 
 function FeedPage() {
   const { data: posts, isPending } = useQueryFn("posts", getPosts);
-
   return (
     <div className="">
       <div className="mt-4 flex flex-col gap-5">
@@ -22,7 +21,6 @@ function FeedPage() {
           )}
         </div>
       </div>
-      
     </div>
   );
 }

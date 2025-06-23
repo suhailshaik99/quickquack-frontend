@@ -6,8 +6,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 // Icon Imports
+import { IoMdClose } from "react-icons/io";
 import { FaPaperPlane } from "react-icons/fa";
-import { IoMdClose, IoMdArrowBack } from "react-icons/io";
 
 // Local Imports
 import Story from "../Stories/Story";
@@ -124,9 +124,6 @@ function MessageBox() {
         {/* Header */}
         <div className="flex items-center justify-between bg-sky-500 px-3 py-2 text-white">
           <div className="flex items-center gap-3 space-x-2">
-            <button className="rounded p-1 hover:bg-sky-600">
-              <IoMdArrowBack size={20} />
-            </button>
             <div
               className="flex items-center gap-4 hover:cursor-pointer"
               onClick={handleProfileClick}

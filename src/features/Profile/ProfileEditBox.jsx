@@ -16,7 +16,7 @@ function ProfileEditBox() {
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-20 px-2 backdrop-blur-sm">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-20 px-3 backdrop-blur-sm">
       <div className="m-auto flex min-h-[45rem] max-w-[45rem] flex-col gap-3 overflow-hidden rounded-3xl border-2 bg-sky-200 shadow-md">
         <div className="flex items-center bg-sky-400 px-4 py-1 shadow-md">
           <div className="flex-grow text-center">

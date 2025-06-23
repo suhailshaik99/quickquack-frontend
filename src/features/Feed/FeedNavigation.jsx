@@ -40,6 +40,7 @@ function FeedNavigation() {
   const unreadMessages = useSelector((state) => state.message.unreadMessages);
   const unreadMessagesCount = Object.entries(unreadMessages).length;
   const connectionRequestsCount = useSelector((state) => state.requests.connectionRequestsCount);
+  const unreadNotificationsCount = useSelector(state => state.notifications.unreadNotificationsCount);
 
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
@@ -98,7 +99,15 @@ function FeedNavigation() {
       <NavLink to="/notifications">
         <NavlinkItem>
           <IoMdNotifications />
-          <span>Notifications</span>
+          {/* <span>Notifications</span> */}
+          <div className="relative flex items-center gap-2">
+            <span>Notifications</span>
+            {unreadNotificationsCount > 0 && (
+              <span className="absolute -right-3 top-1 inline-flex h-7 w-7 -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-sky-500 text-[1.2rem] font-bold text-white">
+                {unreadNotificationsCount}
+              </span>
+            )}
+          </div>
         </NavlinkItem>
       </NavLink>
       <NavLink to="/logout">

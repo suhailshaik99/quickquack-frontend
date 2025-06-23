@@ -29,12 +29,104 @@ body {
     transform: translateY(0);
     opacity: 0.3;
   }
+
   20% {
     transform: translateY(-4px);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0);
     opacity: 0.3;
   }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8rem;
+  height: 8rem;
+  margin-top: -4rem;
+  margin-left: -4rem;
+  background-color: rgb(56, 189, 248);
+  border-radius: 9999px;
+  animation: ripple 4s ease-out infinite;
+}
+
+/* Staggered delays for multiple ripples */
+.ripple.delay-1000 {
+  animation-delay: 1s;
+}
+
+.ripple.delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Duck floating animation */
+/* @keyframes float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(15px, 5px);
+  }
+} */
+ @keyframes float {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(8px, -3px); }
+  50%  { transform: translate(12px, 2px); }
+  75%  { transform: translate(8px, 3px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+
+.floating-duck {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Loading dots blinking */
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.loading-dots span {
+  animation: blink 1.4s ease-in-out infinite both;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
 }

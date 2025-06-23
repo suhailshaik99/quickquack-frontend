@@ -7,8 +7,8 @@ import { closeBox } from "./postSlice";
 function AddDetailsForm({ setStep, register, isPending }) {
   const dispatch = useDispatch();
   return (
-    <div className="flex h-[50rem] w-[40rem] sm:w-[45rem] flex-col gap-[5rem] rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md">
-      <div className="flex items-center justify-between border-b-2 border-slate-300 px-5">
+    <div className="flex h-[50rem] w-[36rem] sm:w-[45rem] flex-col gap-[5rem] rounded-3xl bg-sky-200 shadow-md shadow-slate-400 backdrop:blur-md">
+      <div className="flex items-center justify-between border-b-2 border-slate-300 px-4">
         <IoMdArrowRoundBack
           size={24}
           className="text-slate-600 hover:cursor-pointer"
@@ -24,7 +24,7 @@ function AddDetailsForm({ setStep, register, isPending }) {
         />
       </div>
       <div className="flex flex-col items-center justify-center gap-[4rem]">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-2">
           <label className="text-[1.6rem] font-medium text-slate-700">
             Description
           </label>

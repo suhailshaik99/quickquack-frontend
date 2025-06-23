@@ -1,10 +1,21 @@
 // Library Imports
+import moment from "moment-timezone";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
 // Local Imports
 import useComment from "../../hooks/useComment";
+import { useSocket } from "../../contexts/socketContext";
 
-function CommentBox({ postId, handleOpenCommentBox, bgApply = false }) {
+function CommentBox({
+  postId,
+  postedBy: postUploadedBy,
+  handleOpenCommentBox,
+  bgApply = false,
+}) {
+  const socket = useSocket();
+  const { _id: userId } = useSelector((state) => state.user.userDetails);
+  const { postedBy } = useSelector((state) => state?.post?.carouselPosts[0] || {});
   const { mutate: mutateComment, isPending } = useComment();
   const {
     handleSubmit,
@@ -14,6 +25,13 @@ function CommentBox({ postId, handleOpenCommentBox, bgApply = false }) {
   } = useForm();
 
   function onSubmit(data) {
+    socket.emit("trigger-comment-notifications", {
+      userId,
+      postedBy: postUploadedBy || postedBy,
+      postId,
+      actionAt: moment().tz("Asia/Kolkata").format("h:mm A"),
+      fullTime: moment().tz("Asia/Kolkata").format("DD/MM/YYYY h:mm:ss A z"),
+    });
     mutateComment({ postId, data });
     handleOpenCommentBox();
     reset();

@@ -1,20 +1,24 @@
 // Library Imports
 import { useState } from "react";
+import moment from "moment-timezone";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Local Imports
+import { closeBox } from "./postSlice";
 import AddDetailsForm from "./AddDetailsForm";
 import UploadImageForm from "./UploadImageForm";
 import useMutationFunc from "../../hooks/useMutation";
+import { useSocket } from "../../contexts/socketContext";
 import { createPost } from "../../services/FormSubmitAPI";
-import { useDispatch } from "react-redux";
-import { closeBox } from "./postSlice";
-import { useQueryClient } from "@tanstack/react-query";
 
 function CreatePost() {
+  const socket = useSocket();
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
+  const {_id: userId} = useSelector(state => state.user.userDetails);
   const {
     register,
     handleSubmit,
@@ -33,10 +37,18 @@ function CreatePost() {
     formData.append("description", data.description);
     formData.append("postUpload", data.postUpload[0]);
     mutate(formData, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        const { _id: newPostId } = data?.post || {};
+        const eventData = {
+          userId, 
+          newPostId,
+          actionAt: moment().tz("Asia/Kolkata").format("h:mm A"),
+          fullTime: moment().tz("Asia/Kolkata").format("DD/MM/YYYY h:mm:ss A z")
+        }
+        socket.emit("trigger-postCreation-notifications", eventData);
         dispatch(closeBox());
         queryClient.invalidateQueries(["posts"]);
-      }
+      },
     });
   }
 
