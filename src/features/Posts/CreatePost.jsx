@@ -33,9 +33,13 @@ function CreatePost() {
 
   function handleFormSubmit(data) {
     const formData = new FormData();
+    const time = moment().tz("Asia/Kolkata").format("hh:mm A");
+    const date = moment().tz("Asia/Kolkata").format("DD/MM/YYYY h:mm:ss A z");
     formData.append("location", data.location);
     formData.append("description", data.description);
     formData.append("postUpload", data.postUpload[0]);
+    formData.append("postedAt", time);
+    formData.append("postedOn", date);
     mutate(formData, {
       onSuccess: (data) => {
         const { _id: newPostId } = data?.post || {};

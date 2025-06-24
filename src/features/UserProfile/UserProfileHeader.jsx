@@ -1,20 +1,21 @@
 // Library Imports
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Local Imports
 import Story from "../Stories/Story";
 import useQueryFn from "../../hooks/useQuery";
 import { setProfileViewer } from "../Profile/profileSlice";
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";
+import DualRingLoader from "../../spinners/DualRingLoader";
 
 function UserProfileHeader({ username }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     data: userProfileDetails,
-    isLoading,
+    isPending,
     isError,
     error,
   } = useQueryFn(["userProfileDetails", username], getUserProfileDetails, {
@@ -43,10 +44,14 @@ function UserProfileHeader({ username }) {
     }
   }, [isError, error, navigate]);
 
-  if (isLoading) return <p>Loading...</p>;
-
   return (
     <div className="flex flex-col items-center text-center">
+      
+      {isPending && (
+        <div className="flex h-full items-center justify-center">
+          <DualRingLoader />
+        </div>
+      )}
       <div className="hover:cursor-pointer" onClick={handleProfileClick}>
         <Story
           profilePicture={profilePicture || "/DEFAULT_PROFILE.png"}

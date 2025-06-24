@@ -6,6 +6,7 @@ import { verifyUserAuthentication } from "../../services/FormSubmitAPI";
 
 const initialState = {
   userDetails: {},
+  viewLogoutBox: false,
   isAuthenticated: false,
   isAuthenticating: false,
 };
@@ -31,6 +32,10 @@ const userSlice = createSlice({
     setUserDetails(state, action) {
       state.userDetails = action.payload;
     },
+
+    setLogoutBox(state) {
+      state.viewLogoutBox = !state.viewLogoutBox;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,5 +57,10 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { userLogin, userLogout, setUserDetails, userAuthentication } =
-  userSlice.actions;
+export const {
+  userLogin,
+  userLogout,
+  setLogoutBox,
+  setUserDetails,
+  userAuthentication,
+} = userSlice.actions;

@@ -23,6 +23,7 @@ import {
   clearUnreadMessages,
   clearRecipientDetails,
 } from "./messageSlice";
+import DualRingLoader from "../../spinners/DualRingLoader";
 
 function MessageBox() {
   const bottomRef = useRef();
@@ -85,7 +86,7 @@ function MessageBox() {
   }
 
   function handleClose() {
-    socket.emit("bulk-mark-read", {userId, receiverId});
+    socket.emit("bulk-mark-read", { userId, receiverId });
     queryClient.invalidateQueries(["messageCards"]);
     dispatch(setMessageBox());
     dispatch(clearRecipientDetails());
@@ -97,7 +98,6 @@ function MessageBox() {
   }
 
   function handleSendMessage() {
-    
     const message = messageRef.current?.value?.trim();
     if (!message) return;
 
@@ -119,7 +119,7 @@ function MessageBox() {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40">
+    <div className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm">
       <div className="absolute inset-0 flex flex-col overflow-hidden rounded-none border border-gray-300 bg-sky-200 shadow-lg sm:bottom-4 sm:left-4 sm:right-auto sm:top-auto sm:h-[50rem] sm:w-[40rem] sm:rounded-xl">
         {/* Header */}
         <div className="flex items-center justify-between bg-sky-500 px-3 py-2 text-white">
@@ -145,7 +145,11 @@ function MessageBox() {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-3">
           <div className="flex flex-col gap-2 px-2">
-            {isPending && <p>Loading conversation</p>}
+            {isPending && (
+              <div className="flex h-full items-center justify-center">
+                <DualRingLoader />
+              </div>
+            )}
             {allMessages.map((msg) => (
               <Message key={msg._id} user={msg.user} time={msg.messageSentAt}>
                 {msg.message}

@@ -5,20 +5,26 @@ import useQueryFn from "../hooks/useQuery";
 import Post from "../features/Posts/Post";
 import { getPosts } from "../services/FormSubmitAPI";
 import FeedStories from "../features/Stories/FeedStories";
+import PostsLoader from "../spinners/PostsLoader";
 
 function FeedPage() {
   const { data: posts, isPending } = useQueryFn("posts", getPosts);
   return (
-    <div className="">
-      <div className="mt-4 flex flex-col gap-5">
+    <div className="w-full">
+      <div className="mt-4 flex w-full flex-col gap-5">
         <FeedStories />
         <div className="flex flex-col items-center gap-2 divide-y">
-          {isPending && "Loading posts.."}
-          {posts?.length == 0 ? (
-            <p className="mt-auto">No Posts yet</p>
-          ) : (
-            posts?.map((post) => <Post key={post._id} post={post} />)
-          )}
+          <div className="flex flex-col items-center gap-2 divide-y">
+            {isPending ? (
+              <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+                <PostsLoader />
+              </div>
+            ) : posts?.length === 0 ? (
+              <p className="mt-auto">No Posts yet</p>
+            ) : (
+              posts?.map((post) => <Post key={post._id} post={post} />)
+            )}
+          </div>
         </div>
       </div>
     </div>

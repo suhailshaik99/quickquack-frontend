@@ -11,6 +11,8 @@ import CommentBox from "../Comments/CommentBox";
 function Post({ post }) {
   const [openCommentBox, setOpenCommentBox] = useState(false);
   const {
+    postedAt,
+    postedOn,
     postUrl,
     description,
     likesCount,
@@ -25,7 +27,7 @@ function Post({ post }) {
  
   return (
     <div className="mt-3 flex h-auto w-[38rem] flex-col justify-center px-2 pt-4 sm:w-[48rem]">
-      <PostHeader postedBy={postedBy} />
+      <PostHeader postedBy={postedBy} postedAt={postedAt}/>
       <PostImage postUrl={postUrl} />
       <PostFooter
         handleOpenCommentBox={handleOpenCommentBox}
@@ -34,6 +36,8 @@ function Post({ post }) {
         postedBy={postedBy._id}
       />
       <PostDescription
+      postedOn={postedOn}
+      postedBy={postedBy}
         description={description}
         likesCount={likesCount}
         commentsCount={commentsCount}

@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // Local Imports
+import LogoutBox from "./Logout";
 import useAuth from "../hooks/useAuth";
 import ProfileViewer from "./ProfileViewer";
 import FeedAside from "../features/Feed/FeedAside";
@@ -19,6 +20,7 @@ import ProfileOptionsBox from "../features/Profile/ProfileOptionsBox";
 import SuggestedUsersBox from "../features/Suggestions/SuggestedUsersBox";
 
 function AppLayout() {
+  const { viewLogoutBox } = useSelector((state) => state.user);
   const { openCarousel } = useSelector((state) => state.post);
   const { messageBox } = useSelector((state) => state.message);
   const { openRequestsBox } = useSelector((state) => state.requests);
@@ -36,6 +38,7 @@ function AppLayout() {
       {/* Overlay Modals */}
       {messageBox && <MessageBox />}
       {openPostBox && <CreatePost />}
+      {viewLogoutBox && <LogoutBox />}
       {openFriendsBox && <FriendsBox />}
       {openCarousel && <PostsCarousel />}
       {openRequestsBox && <RequestsBox />}

@@ -11,6 +11,7 @@ import {
   setViewProfileEditBox,
   setViewProfileOptionsBox,
 } from "./profileSlice";
+import { setLogoutBox } from "../Authentication/userSlice";
 
 function ProfileOptionsBox() {
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ function ProfileOptionsBox() {
   function handleEditProfileClick() {
     dispatch(setViewProfileEditBox());
     dispatch(setViewProfileOptionsBox());
+  }
+
+  function handleLogoutClick() {
+    dispatch(setViewProfileOptionsBox());
+    dispatch(setLogoutBox());
   }
 
   return (
@@ -41,7 +47,10 @@ function ProfileOptionsBox() {
           <MdEditSquare size={16} />
           <span className="text-[1.6rem] font-medium">Edit Profile</span>
         </div>
-        <div className="flex items-center gap-2 rounded-xl p-4 transition-all duration-300 hover:cursor-pointer hover:bg-sky-300">
+        <div
+          className="flex items-center gap-2 rounded-xl p-4 transition-all duration-300 hover:cursor-pointer hover:bg-sky-300"
+          onClick={handleLogoutClick}
+        >
           <RiLogoutBoxRFill size={18} />
           <span className="text-[1.6rem] font-medium">Log Out</span>
         </div>

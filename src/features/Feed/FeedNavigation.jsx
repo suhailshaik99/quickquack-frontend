@@ -15,6 +15,7 @@ import { BiSolidMessageSquareDetail } from "react-icons/bi";
 // Local Imports
 import { openBox } from "../Posts/postSlice";
 import { openRequestsBox } from "../ConnectionRequests/requestSlice";
+import { setLogoutBox } from "../Authentication/userSlice";
 
 function NavlinkItem({ children }) {
   return (
@@ -24,23 +25,32 @@ function NavlinkItem({ children }) {
   );
 }
 
-function handlePostClick(dispatch) {
-  dispatch(openBox());
-  return;
-}
-
-function handleRequestsClick(dispatch) {
-  dispatch(openRequestsBox());
-  return;
-}
-
 function FeedNavigation() {
   // Redux Hooks
   const dispatch = useDispatch();
   const unreadMessages = useSelector((state) => state.message.unreadMessages);
   const unreadMessagesCount = Object.entries(unreadMessages).length;
-  const connectionRequestsCount = useSelector((state) => state.requests.connectionRequestsCount);
-  const unreadNotificationsCount = useSelector(state => state.notifications.unreadNotificationsCount);
+  const connectionRequestsCount = useSelector(
+    (state) => state.requests.connectionRequestsCount,
+  );
+  const unreadNotificationsCount = useSelector(
+    (state) => state.notifications.unreadNotificationsCount,
+  );
+
+  function handlePostClick() {
+    dispatch(openBox());
+    return;
+  }
+
+  function handleRequestsClick() {
+    dispatch(openRequestsBox());
+    return;
+  }
+
+  function handleLogoutClick() {
+    dispatch(setLogoutBox());
+    return;
+  }
 
   return (
     <ul className="flex flex-col gap-4 p-4 text-[1.8rem] font-medium text-slate-900">
@@ -77,7 +87,7 @@ function FeedNavigation() {
           </div>
         </NavlinkItem>
       </NavLink>
-      <NavLink onClick={() => handleRequestsClick(dispatch)}>
+      <NavLink onClick={handleRequestsClick}>
         <NavlinkItem>
           <FaUserPlus />
           <div className="relative flex items-center gap-2">
@@ -90,7 +100,7 @@ function FeedNavigation() {
           </div>
         </NavlinkItem>
       </NavLink>
-      <NavLink onClick={() => handlePostClick(dispatch)}>
+      <NavLink onClick={handlePostClick}>
         <NavlinkItem>
           <AiFillPlusCircle />
           <span>Create Post</span>
@@ -110,7 +120,7 @@ function FeedNavigation() {
           </div>
         </NavlinkItem>
       </NavLink>
-      <NavLink to="/logout">
+      <NavLink onClick={handleLogoutClick}>
         <NavlinkItem>
           <FaSignOutAlt />
           <span>Log Out</span>

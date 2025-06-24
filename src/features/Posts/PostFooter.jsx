@@ -35,7 +35,7 @@ function PostFooter({ handleOpenCommentBox, postId, isLikedByUser, postedBy }) {
       postId,
       isLikedByUser,
       actionAt: moment().tz("Asia/Kolkata").format("h:mm A"),
-      fullTime: moment().tz("Asia/Kolkata").format("DD/MM/YYYY h:mm:ss A z")
+      fullTime: moment().tz("Asia/Kolkata").format("DD/MM/YYYY h:mm:ss A z"),
     });
   }
 
@@ -57,12 +57,12 @@ function PostFooter({ handleOpenCommentBox, postId, isLikedByUser, postedBy }) {
           <FaRegCommentAlt size={21} />
         </SpanElement>
         <SpanElement>
-          <TbLocationShare size={24} />
+          <TbLocationShare size={24} className="hover:cursor-not-allowed" />
         </SpanElement>
       </div>
       <div>
         <SpanElement>
-          <BiCollection size={24} />
+          <BiCollection size={24} className="hover:cursor-not-allowed" />
         </SpanElement>
       </div>
     </div>

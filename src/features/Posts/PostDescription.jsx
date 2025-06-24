@@ -1,13 +1,18 @@
 // Library Imports
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // Local Imports
 import { openCommentsListBox, setPostId } from "./postSlice";
 
-function PostDescription({ description, likesCount, commentsCount, postId }) {
-  
+function PostDescription({
+  description,
+  likesCount,
+  commentsCount,
+  postId,
+  postedOn,
+  postedBy,
+}) {
   const dispatch = useDispatch();
-  const { username } = useSelector((state) => state.user.userDetails);
 
   function handleOpenCommentsList() {
     dispatch(setPostId(postId));
@@ -27,8 +32,11 @@ function PostDescription({ description, likesCount, commentsCount, postId }) {
           {commentsCount || 0} Comments
         </span>
       </div>
-      <div className="flex flex-col">
-        <span className="text-[1.5rem] font-semibold">{username}</span>
+      <div className="mt-4 flex flex-col">
+        <p className="text-[1.2rem] font-bold text-slate-700">
+          {postedOn?.split(" ")[0] || "24/06/2025"}
+        </p>
+        <span className="text-[1.5rem] font-semibold">{postedBy.username}</span>
         <p className="text-[1.3rem]">{description}</p>
       </div>
     </div>

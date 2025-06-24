@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Local Imports
 import Comment from "./Comment";
 import useQueryFn from "../../hooks/useQuery";
+import DualRingLoader from "../../spinners/DualRingLoader";
 import { getComments } from "../../services/FormSubmitAPI";
 import { clearPostId, closeCommentsListBox } from "../Posts/postSlice";
 
@@ -35,7 +36,9 @@ function CommentsList() {
         </div>
         <div className="h-[52rem] space-y-3 divide-y divide-slate-300 overflow-y-auto pr-3">
           {isPending ? (
-            "Loading comments for the post"
+            <div className="flex h-full items-center justify-center">
+              <DualRingLoader />
+            </div>
           ) : (
             <>
               {comments?.length == 0 ? (

@@ -11,6 +11,7 @@ import {
 import FriendsCard from "./FriendsCard";
 import useQueryFn from "../../hooks/useQuery";
 import { getFriends } from "../../services/FormSubmitAPI";
+import DualRingLoader from "../../spinners/DualRingLoader";
 
 function FriendsBox() {
   const dispatch = useDispatch();
@@ -46,8 +47,12 @@ function FriendsBox() {
               {viewFollowers ? "Followers" : "Following"}
             </h1>
           </div>
-          <div className="space-y-4 overflow-auto px-6 py-4 pb-4">
-            {isPending && <p>Loading your friends...</p>}
+          <div className="h-full space-y-4 overflow-auto px-6 py-4 pb-4">
+            {isPending && (
+              <div className="flex h-full items-center justify-center">
+                <DualRingLoader />
+              </div>
+            )}
             {viewFollowers &&
               friends?.followers?.map((friend) => (
                 <FriendsCard

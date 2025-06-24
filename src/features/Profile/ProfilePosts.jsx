@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 // Local Imports
 import useQueryFn from "../../hooks/useQuery";
 import EmptyPostPlaceholder from "./ProfileEmptyPosts";
+import DualRingLoader from "../../spinners/DualRingLoader";
 import {
   setCarousel,
   setCarouselPostId,
@@ -28,7 +29,11 @@ function ProfilePosts() {
 
   return (
     <div className={`mt-8 ${postsCount > 0 ? gridStyles : "grid grid-cols-1"}`}>
-      {isPending && <p>Loading profile details...</p>}
+      {isPending && (
+        <div className="flex h-full items-center justify-center">
+          <DualRingLoader />
+        </div>
+      )}
       {postsCount === 0 ? (
         <EmptyPostPlaceholder />
       ) : (

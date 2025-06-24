@@ -568,10 +568,28 @@ async function getUnreadCount() {
   }
 }
 
+async function logoutUser() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_LOGOUT_USER,
+      { withCredentials: true },
+    );
+    if (!response.data.success) {
+      throw new Error("Error Logging out user");
+    }
+    return response?.data;
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.message || "Error Logging out user";
+    throw new Error(errorMessage);
+  }
+}
+
 export {
   getPosts,
   createPost,
   createLike,
+  logoutUser,
   getFriends,
   deletePost,
   getComments,

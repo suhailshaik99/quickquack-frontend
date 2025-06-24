@@ -20,6 +20,7 @@ import CommentBox from "../Comments/CommentBox";
 import useMutationFunc from "../../hooks/useMutation";
 import { deletePost, getComments } from "../../services/FormSubmitAPI";
 import { useQueryClient } from "@tanstack/react-query";
+import DualRingLoader from "../../spinners/DualRingLoader";
 
 const PostsCarousel = () => {
   const dispatch = useDispatch();
@@ -139,7 +140,7 @@ const PostsCarousel = () => {
             </h2>
             {loadingComments ? (
               <div className="flex h-full items-center justify-center">
-                <p className="text-gray-500">Loading comments...</p>
+                <DualRingLoader />
               </div>
             ) : comments?.length > 0 ? (
               <ul className="divide-y-2 divide-sky-400">

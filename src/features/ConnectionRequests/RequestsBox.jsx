@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import useQueryFn from "../../hooks/useQuery";
 import RequestDetails from "./RequestDetails";
 import { closeRequestsBox } from "./requestSlice";
+import DualRingLoader from "../../spinners/DualRingLoader";
 import { getFriendRequests } from "../../services/FormSubmitAPI";
 
 function RequestsBox() {
@@ -28,8 +29,12 @@ function RequestsBox() {
             Connection Requests
           </h1>
         </div>
-        <div className="space-y-4 overflow-auto px-6 py-4 pb-4">
-          {isPending ? <p>Loading...</p> : ""}
+        <div className="h-full space-y-4 overflow-auto px-6 py-4 pb-4">
+          {isPending && (
+            <div className="flex h-full items-center justify-center">
+              <DualRingLoader />
+            </div>
+          )}
           {connRequests?.length == 0 ? (
             <p>No pending requests at the moment</p>
           ) : (
