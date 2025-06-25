@@ -1,4 +1,5 @@
 // Local Imports
+import Caughtup from "./Caughtup";
 import PeopleBrief from "./PeopleBrief";
 import useQueryFn from "../../hooks/useQuery";
 import DualRingLoader from "../../spinners/DualRingLoader";
@@ -21,9 +22,10 @@ function SuggestedUsersBox() {
           </div>
         )}
         {suggestions?.length == 0 ? (
-          <p className="text-center text-[1.4rem] font-medium">
-            You are caught up, let other people to join the application.
-          </p>
+          // <p className="text-center text-[1.4rem] font-medium">
+          //   You are caught up, let other people to join the application.
+          // </p>
+          <Caughtup />
         ) : (
           ""
         )}

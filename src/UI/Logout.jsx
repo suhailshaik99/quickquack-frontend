@@ -12,6 +12,7 @@ function LogoutBox() {
   const { mutate: logout, isPending } = useMutation({
     mutationFn: logoutUser,
     onSuccess() {
+      dispatch(setLogoutBox());
       dispatch(userLogout());
       toast("You have been logged out!", {
         icon: "⚠️",

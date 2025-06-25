@@ -1,5 +1,7 @@
+// Local Imports
 import useQueryFn from "../../hooks/useQuery";
 import NotificationCard from "./NotificationCard";
+import EmptyNotifications from "./EmptyNotifications";
 import DualRingLoader from "../../spinners/DualRingLoader";
 import { getNotifications } from "../../services/FormSubmitAPI";
 
@@ -15,6 +17,7 @@ function NotificationsBox() {
           <DualRingLoader />
         </div>
       )}
+      {notifications?.length === 0 && <EmptyNotifications />}
       {notifications?.map((notification) => (
         <NotificationCard key={notification._id} notification={notification} />
       ))}

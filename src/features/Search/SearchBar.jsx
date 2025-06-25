@@ -3,9 +3,13 @@ import { useRef, useState } from "react";
 
 // Local Imports
 import UserCards from "./UserCards";
+import EmptySearch from "./EmptySearch";
 import useMutationFunc from "../../hooks/useMutation";
 import { searchUsers } from "../../services/FormSubmitAPI";
 import DualRingLoader from "../../spinners/DualRingLoader";
+
+const gridStyles =
+  "grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-2 sm:place-items-center sm:px-4 md:grid-cols-3 md:place-items-center md:gap-4 md:gap-y-16";
 
 function SearchBar() {
   let searchString;
@@ -52,8 +56,15 @@ function SearchBar() {
           Search
         </button>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl bg-sky-100 p-2 shadow-md shadow-gray-400 sm:p-4">
-        <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-2 sm:place-items-center sm:px-4 md:grid-cols-3 md:place-items-center md:gap-4 md:gap-y-16">
+      <div className="flex min-h-0 flex-1 overflow-y-auto rounded-2xl bg-sky-100 p-2 shadow-md shadow-gray-400 sm:block sm:p-4">
+        <div
+          className={`${searchResults.length > 0 ? gridStyles : "grid grid-cols-1"}`}
+        >
+          <div
+            className={`flex h-full w-full items-center justify-center ${searchResults.length > 0 ? "sm:hidden" : ""}`}
+          >
+            <EmptySearch />
+          </div>
           {isPending && (
             <div className="flex h-full items-center justify-center">
               <DualRingLoader />

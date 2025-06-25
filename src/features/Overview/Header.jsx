@@ -1,4 +1,8 @@
+// Library Imports
 import { Link } from "react-router-dom";
+
+// Local Imports
+import FeedLogo from "../Feed/FeedLogo";
 
 function NavLink({ to, children, classes }) {
   return (
@@ -12,15 +16,7 @@ function Header() {
   return (
     <header className="">
       <nav className="relative flex items-center justify-between bg-sky-100 shadow-md shadow-gray-300">
-        <div className="py-6">
-          <NavLink to="/">
-            <img
-              src="quick_quack_logo.svg"
-              alt="app-logo"
-              className="ml-2 h-[3rem] w-[14rem] sm:h-[4rem] sm:w-[16rem]"
-            />
-          </NavLink>
-        </div>
+        <FeedLogo />
         <div className="mr-7 flex space-x-3">
           <NavLink
             to="/login"

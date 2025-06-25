@@ -1,6 +1,7 @@
 // Library Imports
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Icon Imports
 import { RxCross2 } from "react-icons/rx";
@@ -18,11 +19,12 @@ import Comment from "../Comments/Comment";
 import useQueryFn from "../../hooks/useQuery";
 import CommentBox from "../Comments/CommentBox";
 import useMutationFunc from "../../hooks/useMutation";
-import { deletePost, getComments } from "../../services/FormSubmitAPI";
-import { useQueryClient } from "@tanstack/react-query";
+import { useSocket } from "../../contexts/socketContext";
 import DualRingLoader from "../../spinners/DualRingLoader";
+import { deletePost, getComments } from "../../services/FormSubmitAPI";
 
 const PostsCarousel = () => {
+  const socket = useSocket();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const [postOptions, setPostOptions] = useState(false);
@@ -67,11 +69,12 @@ const PostsCarousel = () => {
     setPostOptions((prev) => !prev);
   };
 
-  const handlePostDelete = () => {
+  const handlePostDelete = async () => {
     const data = {
       userId,
       postId: currentPost._id,
     };
+    await socket.emit("delete-post-notifications", data);
     mutate(data, {
       onSuccess: () => {
         queryClient.invalidateQueries(["profilePosts"]);

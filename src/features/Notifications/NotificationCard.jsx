@@ -9,7 +9,7 @@ function NotificationCard({ notification }) {
     actionAt,
     fullTime,
     isRead,
-  } = notification;
+  } = notification || {};
   let message = "";
   if (type === "new-post") {
     message = "has uploaded a new post, check it out.!";

@@ -10,6 +10,7 @@ import {
 } from "../Posts/postSlice";
 import { getUserProfileDetails } from "../../services/FormSubmitAPI";
 import DualRingLoader from "../../spinners/DualRingLoader";
+import EmptyProfilePosts from "./NoPosts";
 
 const gridStyles = "grid grid-cols-3 gap-2";
 
@@ -37,7 +38,7 @@ function UserProfilePosts({ username }) {
         </div>
       )}
       {postsCount === 0 ? (
-        <p>No Posts yet by the user</p>
+        <EmptyProfilePosts />
       ) : (
         posts.map((post, i) => (
           <div key={post._id} className="aspect-square rounded-xl bg-gray-200">

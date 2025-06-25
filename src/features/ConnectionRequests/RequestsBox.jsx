@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import useQueryFn from "../../hooks/useQuery";
 import RequestDetails from "./RequestDetails";
 import { closeRequestsBox } from "./requestSlice";
+import NoPendingRequests from "./NoPendingRequests";
 import DualRingLoader from "../../spinners/DualRingLoader";
 import { getFriendRequests } from "../../services/FormSubmitAPI";
 
@@ -36,7 +37,7 @@ function RequestsBox() {
             </div>
           )}
           {connRequests?.length == 0 ? (
-            <p>No pending requests at the moment</p>
+            <NoPendingRequests />
           ) : (
             ""
           )}

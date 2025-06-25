@@ -18,6 +18,7 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
   const dispatch = useDispatch();
   const { mutate: deleteReqFn, isPending: pendingDel } = useDeleteReq();
   const { mutate: confirmReqFn, isPending: pendingConf } = useConfirmReq();
+
   // onClick Handler functions
   // F1
   function handleProfileViewClick() {
@@ -28,7 +29,7 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
 
   // F2
   function handleConfirmRequest(userId) {
-    return confirmReqFn({docId, userId});
+    return confirmReqFn({ docId, userId });
   }
 
   // F3
@@ -44,7 +45,7 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
       >
         <Story height={5} width={5} profilePicture={profilePicture} />
         <div className="">
-          <p className="text-xl sm:text-2xl font-semibold tracking-wide text-slate-700">
+          <p className="text-xl font-semibold tracking-wide text-slate-700 sm:text-2xl">
             {username || "username"}
           </p>
         </div>
@@ -53,12 +54,14 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
         <button
           className={cancelButtonStyles}
           onClick={() => handleDeleteRequest(userId)}
+          disabled={pendingDel}
         >
           delete
         </button>
         <button
           className={buttonStyles}
           onClick={() => handleConfirmRequest(userId)}
+          disabled={pendingConf}
         >
           confirm
         </button>

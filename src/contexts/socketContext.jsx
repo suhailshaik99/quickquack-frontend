@@ -114,7 +114,6 @@ function SocketProvider({ children }) {
     };
 
     const handleRefreshNotifications = () => {
-      console.log("Notification received about refreshing the notifications feed");
       queryClient.invalidateQueries(["unreadNotificationsCount"]);
     }
 

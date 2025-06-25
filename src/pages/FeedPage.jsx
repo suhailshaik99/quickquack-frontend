@@ -1,11 +1,10 @@
-// Library Imports
-import useQueryFn from "../hooks/useQuery";
-
 // Local Imports
 import Post from "../features/Posts/Post";
+import useQueryFn from "../hooks/useQuery";
+import PostsLoader from "../spinners/PostsLoader";
+import EmptyFeed from "../features/Posts/EmptyFeed";
 import { getPosts } from "../services/FormSubmitAPI";
 import FeedStories from "../features/Stories/FeedStories";
-import PostsLoader from "../spinners/PostsLoader";
 
 function FeedPage() {
   const { data: posts, isPending } = useQueryFn("posts", getPosts);
@@ -20,7 +19,7 @@ function FeedPage() {
                 <PostsLoader />
               </div>
             ) : posts?.length === 0 ? (
-              <p className="mt-auto">No Posts yet</p>
+              <EmptyFeed />
             ) : (
               posts?.map((post) => <Post key={post._id} post={post} />)
             )}

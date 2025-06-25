@@ -29,7 +29,7 @@ function FeedNavigation() {
   // Redux Hooks
   const dispatch = useDispatch();
   const unreadMessages = useSelector((state) => state.message.unreadMessages);
-  const unreadMessagesCount = Object.entries(unreadMessages).length;
+  const unreadMessagesCount = Object.entries(unreadMessages)?.length;
   const connectionRequestsCount = useSelector(
     (state) => state.requests.connectionRequestsCount,
   );
