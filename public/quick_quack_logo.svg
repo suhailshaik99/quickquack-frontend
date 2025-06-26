@@ -1,7 +1,0 @@
-<svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-  <!-- Main Logo Text -->
-  <text x="50%" y="50" font-family="sans-serif" font-size="60" font-weight="bold" text-anchor="middle" fill="#000000">QuickQuack</text>
-  
-  <!-- Subtext -->
-  <text x="50%" y="85" font-family="sans-serif" font-size="30" text-anchor="middle" fill="#FFFFF">Quick Connect</text>
-</svg>

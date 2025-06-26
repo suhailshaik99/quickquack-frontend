@@ -54,7 +54,7 @@ function UserProfileHeader({ username }) {
       )}
       <div className="hover:cursor-pointer" onClick={handleProfileClick}>
         <Story
-          profilePicture={profilePicture || "/DEFAULT_PROFILE.png"}
+          profilePicture={profilePicture || "/DEFAULT_PROFILE.webp"}
           height={13}
           width={13}
         />

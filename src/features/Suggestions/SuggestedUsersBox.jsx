@@ -6,10 +6,11 @@ import DualRingLoader from "../../spinners/DualRingLoader";
 import { getSuggestedFriends } from "../../services/FormSubmitAPI";
 
 function SuggestedUsersBox() {
-  const { data: suggestions, isPending } = useQueryFn(
-    "suggestedFriends",
-    getSuggestedFriends,
-  );
+  const {
+    data: suggestions,
+    isPending,
+  } = useQueryFn("suggestedFriends", getSuggestedFriends);
+
   return (
     <div className="m-auto flex w-[42rem] flex-col overflow-hidden rounded-2xl shadow-sm shadow-slate-400 sm:h-[36rem]">
       <h1 className="mb-3 bg-sky-500 p-2 text-center text-[1.8rem] font-medium tracking-wide text-yellow-50">
@@ -21,14 +22,7 @@ function SuggestedUsersBox() {
             <DualRingLoader />
           </div>
         )}
-        {suggestions?.length == 0 ? (
-          // <p className="text-center text-[1.4rem] font-medium">
-          //   You are caught up, let other people to join the application.
-          // </p>
-          <Caughtup />
-        ) : (
-          ""
-        )}
+        {suggestions?.length == 0 ? <Caughtup /> : ""}
         {suggestions?.map((friend) => (
           <PeopleBrief
             key={friend._id}

@@ -3,7 +3,8 @@ function SectionFour() {
     <div className="grid grid-cols-[1fr_1fr]">
       <div className="justify-self-center">
         <img
-          src="SECTION_FOUR_IMG.png"
+          src="/SECTION_FOUR_IMG.webp"
+          loading="lazy"
           alt="section_two_image"
           className="h-[18rem] w-[18rem] sm:h-[45rem] sm:w-[45rem]"
         />

@@ -26,7 +26,7 @@ function SignupPage() {
     <div className="grid min-h-[100dvh] grid-cols-1 place-items-center bg-sky-200 p-4 sm:h-screen sm:grid-cols-[1fr_1fr]">
       <div className="hidden sm:block">
         <img
-          src="SIGNUP_IMG.PNG"
+          src="/SIGNUP_IMG.webp"
           alt="signup_image"
           className="h-full w-full"
         />

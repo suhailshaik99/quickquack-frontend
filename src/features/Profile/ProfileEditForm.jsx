@@ -124,7 +124,7 @@ function ProfileEditForm() {
   }
 
   function handleRemoveProfilePicture() {
-    setSelectedImage("/DEFAULT_PROFILE.png");
+    setSelectedImage("/DEFAULT_PROFILE.webp");
     setIsProfileRemoved(true);
   }
 

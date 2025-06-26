@@ -17,8 +17,9 @@ function SectionThree() {
       </div>
       <div className="justify-self-center">
         <img
-          src="SECTION_THREE_IMG.png"
+          src="/SECTION_THREE_IMG.webp"
           alt="section_two_image"
+          loading="lazy"
           className="h-[18rem] w-[18rem] sm:h-[45rem] sm:w-[45rem]"
         />
       </div>

@@ -10,7 +10,7 @@ function DuckLoader() {
         {/* Duck image (floating on water) */}
         {/* Replace src with a high-quality duck SVG or image */}
         <img
-          src="SPINNER_IMG.png"
+          src="/SPINNER_IMG.webp"
           alt="A duck floating on water"
           className="floating-duck relative z-10 w-24 md:w-32"
         />

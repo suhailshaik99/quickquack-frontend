@@ -41,18 +41,20 @@ function SocketProvider({ children }) {
   const userId = userDetails?._id;
 
   // --- Data Fetching for Initial Count ---
-  const { data: pendingRequests, isSuccess } = useQueryFn(
-    ["pendingRequests"],
-    getFriendRequests,
-    { enabled: !!isAuthenticated },
-  );
+  const {
+    data: pendingRequests,
+    isSuccess,
+    refetch: refetchPendingReq,
+  } = useQueryFn(["pendingRequests"], getFriendRequests, { enabled: false });
 
   // Fetching unread count initially
-  const { data: unreadCountData, isSuccess: notificationsSuccess } = useQueryFn(
-    ["unreadNotificationsCount"],
-    getUnreadCount,
-    { enabled: !!isAuthenticated },
-  );
+  const {
+    data: unreadCountData,
+    isSuccess: notificationsSuccess,
+    refetch: refetchUnreadNotifications,
+  } = useQueryFn(["unreadNotificationsCount"], getUnreadCount, {
+    enabled: false,
+  });
 
   // Refs for state values that change often
   const messageBoxRef = useRef(messageBox);
@@ -71,10 +73,17 @@ function SocketProvider({ children }) {
   }, [isSuccess, pendingRequests, dispatch]);
 
   useEffect(() => {
-  if (notificationsSuccess && unreadCountData) {
-    dispatch(setUnreadNotificationsCount(unreadCountData.unreadCount));
-  }
-}, [notificationsSuccess, unreadCountData, dispatch]);
+    if (notificationsSuccess && unreadCountData) {
+      dispatch(setUnreadNotificationsCount(unreadCountData.unreadCount));
+    }
+  }, [notificationsSuccess, unreadCountData, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      refetchPendingReq();
+      refetchUnreadNotifications();
+    }
+  }, [isAuthenticated, refetchPendingReq, refetchUnreadNotifications]);
 
   // --- Main Socket Logic ---
   useEffect(() => {
@@ -92,6 +101,10 @@ function SocketProvider({ children }) {
         dispatch(addUnreadMessage(msg));
       }
     };
+
+    const handleRefreshSuggestions = () => {
+      queryClient.invalidateQueries(["suggestedFriends"]);
+    }
 
     const handleUnreadMessages = (messages) => {
       if (Array.isArray(messages) && messages.length > 0) {
@@ -115,7 +128,7 @@ function SocketProvider({ children }) {
 
     const handleRefreshNotifications = () => {
       queryClient.invalidateQueries(["unreadNotificationsCount"]);
-    }
+    };
 
     const handleConnect = () => {
       console.log("Socket connected! Emitting user info.");
@@ -133,6 +146,7 @@ function SocketProvider({ children }) {
     socket.on("unread-messages", handleUnreadMessages);
     socket.on("private-message", handleIncomingMessage);
     socket.on("new-friend-request", handleNewFriendRequest);
+    socket.on("refresh-suggestions-box", handleRefreshSuggestions);
     socket.on("refresh-notifications", handleRefreshNotifications);
 
     // --- Cleanup Function ---
@@ -144,7 +158,6 @@ function SocketProvider({ children }) {
       socket.off("new-friend-request", handleNewFriendRequest);
       socket.disconnect();
     };
-
   }, [isAuthenticated, userId, dispatch, queryClient]);
 
   return (

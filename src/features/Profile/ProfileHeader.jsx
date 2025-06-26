@@ -14,12 +14,12 @@ import {
 } from "./profileSlice";
 import Story from "../Stories/Story";
 import useQueryFn from "../../hooks/useQuery";
+import DualRingLoader from "../../spinners/DualRingLoader";
 import { getProfileDetails } from "../../services/FormSubmitAPI";
 
 function ProfileHeader() {
   const dispatch = useDispatch();
-
-  const { data } = useQueryFn("profileDetails", getProfileDetails);
+  const { data, isPending } = useQueryFn("profileDetails", getProfileDetails);
   const {
     bio,
     username,
@@ -51,6 +51,7 @@ function ProfileHeader() {
 
   return (
     <div className="relative flex flex-col items-center text-center">
+      {isPending && <DualRingLoader />}
       <div className="absolute right-0 hidden hover:cursor-pointer sm:block">
         <MdEditSquare size={22} onClick={handleProfileEditClick} />
       </div>
@@ -58,6 +59,7 @@ function ProfileHeader() {
         <Story profilePicture={profilePicture} height={13} width={13} />
       </div>
 
+      {/* FirstName LastName */}
       <p className="mb-4 mt-4 text-[1.7rem] font-medium">
         {firstName || "Quick"} {lastName || "Quack"}
       </p>
@@ -65,6 +67,7 @@ function ProfileHeader() {
         {`ID: ${username}` || "quickquack_user"}
       </p>
 
+      {/* Posts, Followers, Following */}
       <div className="mt-4 flex gap-8 text-2xl font-medium tracking-wide">
         <p>
           <strong>{postsCount || 0}</strong>{" "}
@@ -80,6 +83,7 @@ function ProfileHeader() {
         </p>
       </div>
 
+      {/* Bio */}
       <div className="mt-4 border-t-2 border-slate-300">
         <div className="whitespace-pre-line pt-2 text-left text-[1.4rem] font-medium">
           {bio || "Building something amazing!"}

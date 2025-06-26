@@ -7,32 +7,20 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 // Local Imports
 import AppLayout from "./UI/AppLayout";
-// import FeedPage from "./pages/FeedPage";
-const FeedPage = lazy(() => import("./pages/FeedPage"));
-// import LoginPage from "./pages/LoginPage";
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-// import Home from "./pages/AppOverviewPage";
-const Home = lazy(() => import("./pages/AppOverviewPage"));
-// import SignupPage from "./pages/SignupPage";
-const SignupPage = lazy(() => import("./pages/SignupPage"));
-// import SearchPage from "./pages/SearchPage";
-const SearchPage = lazy(() => import("./pages/SearchPage"));
-// import ProfilePage from "./pages/ProfilePage";
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+import Home from "./pages/AppOverviewPage";
 import DuckLoader from "./spinners/DuckLoader";
-// import PageNotFound from "./pages/PageNotFound";
-const PageNotFound = lazy(() => import("./pages/PageNotFound"));
-// import MessagesPage from "./pages/MessagesPage";
-const MessagesPage = lazy(() => import("./pages/MessagesPage"));
-import Settings from "./features/Feed/Settings";
-// import ForgotPassword from "./pages/ForgotPasswordPage";
-const ForgotPassword = lazy(() => import("./pages/ForgotPasswordPage"));
-// import UsersProfilePage from "./pages/UsersProfilePage";
-const UsersProfilePage = lazy(() => import("./pages/UsersProfilePage"));
-// import NotificationsPage from "./pages/NotificationsPage";
-const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
+const FeedPage = lazy(() => import("./pages/FeedPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
 import { SocketProvider } from "./contexts/socketContext";
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const MessagesPage = lazy(() => import("./pages/MessagesPage"));
 import { verifyUserAuthentication } from "./services/FormSubmitAPI";
+const ForgotPassword = lazy(() => import("./pages/ForgotPasswordPage"));
+const UsersProfilePage = lazy(() => import("./pages/UsersProfilePage"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
 
 const queryClient = new QueryClient();
 
@@ -78,7 +66,6 @@ function App() {
             <Routes>
               <Route element={isAuthenticated ? <AppLayout /> : <Home />}>
                 <Route path="/" element={<FeedPage />} />
-                <Route path="settings" element={<Settings />} />
                 <Route path="search" element={<SearchPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route

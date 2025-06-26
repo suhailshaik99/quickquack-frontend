@@ -4,6 +4,7 @@ function PostImage({ postUrl }) {
       <img
         src={postUrl}
         alt="user_post"
+        loading="lazy"
         className="h-full w-full rounded-lg object-contain"
       />
     </div>

@@ -14,7 +14,12 @@ function HeroSection() {
         </p>
       </div>
       <div>
-        <img src="HERO_IMAGE.png" alt="hero_image" className="" />
+        <img
+          src={"/HERO_IMAGE.webp"}
+          alt="hero_image"
+          className=""
+          loading="lazy"
+        />
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ function LoginPage() {
       <div className="hidden bg-sky-300 sm:flex sm:items-center sm:justify-center">
         <div>
           <img
-            src="LOGIN_IMG.png"
+            src="LOGIN_IMG.webp"
             alt="login_image"
             className="h-[30rem] sm:h-[50rem]"
           />

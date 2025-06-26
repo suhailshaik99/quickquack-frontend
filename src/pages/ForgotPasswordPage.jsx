@@ -57,7 +57,7 @@ function ForgotPassword() {
       <div className="hidden bg-sky-300 sm:flex sm:items-center sm:justify-center">
         <div>
           <img
-            src="LOGIN_IMG.png"
+            src="/LOGIN_IMG.webp"
             alt="login_image"
             className="h-[30rem] sm:h-[50rem]"
           />
@@ -115,7 +115,7 @@ function ForgotPassword() {
                 />
               </div>
               <button
-                className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold text-white transition-colors hover:bg-sky-600 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-4xl"
+                className="duration-400 rounded-xl bg-sky-400 p-3 text-2xl font-semibold text-white transition-colors hover:bg-sky-600 hover:text-white focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 sm:text-3xl"
                 disabled={isChangingPassword}
               >
                 {isChangingPassword

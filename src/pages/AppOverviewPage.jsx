@@ -1,4 +1,5 @@
 import Header from "../features/Overview/Header";
+import Footer from "../features/Overview/Footer";
 import SectionTwo from "../features/Overview/SectionTwo";
 import HeroSection from "../features/Overview/HeroSection";
 import SectionFour from "../features/Overview/SectionFour";
@@ -14,6 +15,7 @@ function Home() {
       <SectionThree />
       <SectionFour />
       <SectionFive />
+      <Footer />
     </div>
   );
 }

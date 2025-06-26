@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import UserCards from "./UserCards";
 import EmptySearch from "./EmptySearch";
 import useMutationFunc from "../../hooks/useMutation";
+import EmptySearchResults from "./EmptySearchResults";
 import { searchUsers } from "../../services/FormSubmitAPI";
 import DualRingLoader from "../../spinners/DualRingLoader";
 
@@ -14,6 +15,7 @@ const gridStyles =
 function SearchBar() {
   let searchString;
   const searchRef = useRef();
+  const [hasSearched, setHasSearched] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [mutate, isPending, , data] = useMutationFunc(searchUsers);
 
@@ -23,6 +25,7 @@ function SearchBar() {
 
   const handleSearchClick = async () => {
     if (!searchString) return;
+    setHasSearched(true);
     mutate(searchString, {
       onSuccess(data) {
         setSearchResults(data);
@@ -60,17 +63,24 @@ function SearchBar() {
         <div
           className={`${searchResults.length > 0 ? gridStyles : "grid grid-cols-1"}`}
         >
-          <div
-            className={`flex h-full w-full items-center justify-center ${searchResults.length > 0 ? "sm:hidden" : ""}`}
-          >
-            <EmptySearch />
-          </div>
+          {!hasSearched && (
+            <div className="flex h-full w-full items-center justify-center">
+              <EmptySearch />
+            </div>
+          )}
+          
           {isPending && (
-            <div className="flex h-full items-center justify-center">
+            <div className="flex mt-52 h-full w-full items-center justify-center">
               <DualRingLoader />
             </div>
           )}
-          {data?.length == 0 ? <p>No users found</p> : ""}
+
+          {hasSearched && !isPending && searchResults.length === 0 && (
+            <div className="flex h-full w-full items-center justify-center">
+              <EmptySearchResults />
+            </div>
+          )}
+
           {searchResults?.map((user) => (
             <UserCards
               key={user._id}

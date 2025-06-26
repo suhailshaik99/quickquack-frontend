@@ -1,7 +1,7 @@
 import Story from "../Stories/Story";
 import { GoDotFill } from "react-icons/go";
 
-function NotificationCard({ notification }) {
+function NotificationCard({ notification = {} }) {
   const {
     sender: { username, profilePicture },
     type,

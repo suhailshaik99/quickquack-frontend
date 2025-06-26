@@ -1,5 +1,6 @@
 // Library Imports
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Local Imports
 import Story from "../Stories/Story";
@@ -23,6 +24,7 @@ function CancelButton({ userId, handleDeleteRequest }) {
 function PeopleBrief({ userId, username, profilePicture, requested }) {
   const socket = useSocket();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate: sendReqFn } = useSendReq();
   const { mutate: cancelReqFn } = useCancelReq();
 
@@ -36,6 +38,7 @@ function PeopleBrief({ userId, username, profilePicture, requested }) {
   // F2
   function handleSendRequest(userId) {
     sendReqFn(userId);
+    queryClient.invalidateQueries(["profileDetails"]);
     socket.emit("send-friend-request", userId);
     return;
   }

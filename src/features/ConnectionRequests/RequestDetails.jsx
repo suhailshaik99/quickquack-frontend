@@ -6,6 +6,7 @@ import Story from "../Stories/Story";
 import { useDispatch } from "react-redux";
 import { closeRequestsBox } from "./requestSlice";
 import { useConfirmReq, useDeleteReq } from "../../hooks/useConfirmDeleteReq";
+import { useSocket } from "../../contexts/socketContext";
 
 const buttonStyles =
   "rounded-lg bg-sky-300 p-2 text-[1.2rem] font-semibold text-slate-700 transition-colors duration-300 focus:outline-none focus:ring focus:ring-sky-500 focus:ring-offset-2 cusor:pointer";
@@ -14,6 +15,7 @@ const cancelButtonStyles =
   "rounded-lg bg-red-400 p-2 text-[1.2rem] font-semibold text-white transition-colors duration-300 focus:outline-none focus:ring focus:ring-red-500 focus:ring-offset-2";
 
 function RequestDetails({ docId, userId, username, profilePicture }) {
+  const socket = useSocket();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate: deleteReqFn, isPending: pendingDel } = useDeleteReq();
@@ -29,6 +31,7 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
 
   // F2
   function handleConfirmRequest(userId) {
+    socket.emit("req-confirmation-notifications", userId);
     return confirmReqFn({ docId, userId });
   }
 
