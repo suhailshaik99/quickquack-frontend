@@ -12,13 +12,15 @@ export default function ProfilePage() {
     getProfileDetails,
   );
 
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      {isPending && (
-        <div className="flex h-full items-center justify-center">
+  if(isPending) {
+    return <div className="flex h-full items-center justify-center">
           <DualRingLoader />
         </div>
-      )}
+  }
+
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <ProfileHeader />
       <ProfileTabs />
       <ProfilePosts />
