@@ -17,7 +17,7 @@ function SearchBar() {
   const searchRef = useRef();
   const [hasSearched, setHasSearched] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
-  const [mutate, isPending, , data] = useMutationFunc(searchUsers);
+  const [mutate, isPending,] = useMutationFunc(searchUsers);
 
   const handleInputChange = () => {
     searchString = searchRef.current?.value || "";
