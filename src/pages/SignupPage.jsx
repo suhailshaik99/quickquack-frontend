@@ -9,7 +9,7 @@ import { SignUpFormSubmission } from "../services/FormSubmitAPI";
 
 function SignupPage() {
   const navigate = useNavigate();
-  const [mutate, , isSuccess] = useMutationFunc(
+  const [mutate, isPending, isSuccess] = useMutationFunc(
     SignUpFormSubmission,
     "Sign Up successfull",
     "Signing up failed",
@@ -36,7 +36,7 @@ function SignupPage() {
           <h1 className="mb-10 text-center text-6xl font-semibold tracking-wide text-sky-600 sm:text-7xl">
             SignUp
           </h1>
-          <Form mutate={mutate} />
+          <Form mutate={mutate} isPending={isPending} />
           <div className="mt-2 flex items-center justify-center text-[1.7rem] font-bold tracking-wide">
             <Link
               to={"/login"}

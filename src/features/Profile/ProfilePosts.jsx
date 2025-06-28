@@ -29,12 +29,11 @@ function ProfilePosts() {
 
   return (
     <div className={`mt-8 ${postsCount > 0 ? gridStyles : "grid grid-cols-1"}`}>
-      {isPending && (
+      {isPending ? (
         <div className="flex h-full items-center justify-center">
           <DualRingLoader />
         </div>
-      )}
-      {postsCount === 0 ? (
+      ) : postsCount === 0 ? (
         <EmptyPostPlaceholder />
       ) : (
         posts.map((post, i) => (

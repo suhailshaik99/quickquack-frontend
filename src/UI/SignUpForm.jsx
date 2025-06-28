@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import { inputStyle, errorStyle, signUpButton } from "../utils/Styles";
 
-function Form({ mutate }) {
+function Form({ mutate, isPending }) {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
@@ -13,11 +13,12 @@ function Form({ mutate }) {
 
   function onSubmit(data) {
     if (data.year && data.month && data.day) {
-      const dateOfBirth = `${data.year}-${data.month}-${data.day}`;
-      data.dateOfBirth = new Date(dateOfBirth).toLocaleString();
-      return mutate(data);
+      const month = String(data.month).padStart(2, "0");
+      const day = String(data.day).padStart(2, "0");
+      const dateOfBirth = `${data.year}-${month}-${day}`;
+      data.dateOfBirth = new Date(dateOfBirth);
     }
-    mutate(data);
+    return mutate(data);
   }
 
   return (
@@ -178,7 +179,7 @@ function Form({ mutate }) {
       </label>
 
       {/* {Signup button} */}
-      <button type="submit" className={signUpButton}>
+      <button type="submit" className={signUpButton} disabled={isPending}>
         Sign Up
       </button>
     </form>
