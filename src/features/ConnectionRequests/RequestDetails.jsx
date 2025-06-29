@@ -31,13 +31,14 @@ function RequestDetails({ docId, userId, username, profilePicture }) {
 
   // F2
   function handleConfirmRequest(userId) {
+    confirmReqFn({ docId, userId });
     socket.emit("req-confirmation-notifications", userId);
-    return confirmReqFn({ docId, userId });
   }
 
   // F3
   function handleDeleteRequest(userId) {
-    return deleteReqFn(userId);
+    deleteReqFn(userId);
+    socket.emit("req-confirmation-notifications", userId)
   }
 
   return (

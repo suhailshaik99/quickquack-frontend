@@ -1,15 +1,15 @@
 // Library Imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // Local Imports
 import Story from "../Stories/Story";
-import { setMessageBox, setRecipientDetails } from "../Messages/messageSlice";
 import {
   cancelFriendRequest,
   sendFriendRequest,
 } from "../../services/FormSubmitAPI";
 import { useSocket } from "../../contexts/socketContext";
+import { setMessageBox, setRecipientDetails } from "../Messages/messageSlice";
 
 const revokeStyles = "bg-gradient-to-r from-pink-400 to-blue-500";
 const connectStyles = "bg-gradient-to-r from-teal-400 to-blue-500";
@@ -26,6 +26,7 @@ function UserCards({ user, updateUserCard }) {
     isFollowing,
     isRequestedByMe,
   } = user || {};
+  const { _id: loggedUserId } = useSelector((state) => state.user.userDetails);
 
   let buttonText = "";
   let buttonHandler = () => {};
@@ -70,6 +71,7 @@ function UserCards({ user, updateUserCard }) {
       if (!isRequestedByMe) return;
       updateUserCard(userId, { isRequestedByMe: false });
       await cancelFriendRequest(userId);
+      socket.emit("req-confirmation-notifications", loggedUserId);
     } catch (error) {
       updateUserCard(userId, { isRequestedByMe: true });
     }
@@ -81,6 +83,7 @@ function UserCards({ user, updateUserCard }) {
       updateUserCard(userId, { isRequestedByMe: true });
       await sendFriendRequest(userId);
       socket.emit("send-friend-request", userId);
+      socket.emit("req-confirmation-notifications", loggedUserId);
     } catch (error) {
       updateUserCard(userId, { isRequestedByMe: false });
     }
