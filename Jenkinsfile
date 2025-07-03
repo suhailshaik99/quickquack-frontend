@@ -57,11 +57,24 @@ pipeline {
             steps {
                 echo 'Tagging and pushing the image to Docker Hub...'
                 script {
-                    withDockerRegistry([ credentialsId: 'docker-login', url: '' ]) {
-                        def builtImage = docker.image("${DOCKER_IMAGE_NAME}:${APP_VERSION}")
-                        builtImage.push()
-                        builtImage.addTag('latest')
-                        builtImage.push('latest')
+                    withDockerRegistry([ credentialsId: 'docker-credentials', url: '' ]) {
+                        // The image was built with the APP_VERSION tag, e.g., suhailshaik99/quickquack-frontend:v1.2.0
+
+                        // 1. Push the image with the APP_VERSION tag first
+                        docker.image("${DOCKER_IMAGE_NAME}:${APP_VERSION}").push()
+
+                        // 2. Add the 'latest' tag to the image using a direct 'docker tag' command
+                        // This tags the locally existing image (which has the APP_VERSION tag) with 'latest'
+                        // IMPORTANT: For Windows agent, use 'bat' instead of 'sh'
+                        if (isUnix()) {
+                            sh "docker tag ${DOCKER_IMAGE_NAME}:${APP_VERSION} ${DOCKER_IMAGE_NAME}:latest"
+                        } else {
+                            bat "docker tag ${DOCKER_IMAGE_NAME}:${APP_VERSION} ${DOCKER_IMAGE_NAME}:latest"
+                        }
+
+
+                        // 3. Push the newly created 'latest' tag
+                        docker.image("${DOCKER_IMAGE_NAME}:latest").push()
                     }
                 }
             }
