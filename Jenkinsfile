@@ -57,9 +57,18 @@ pipeline {
             steps {
                 echo 'Tagging and pushing the image to Docker Hub...'
                 script {
-                    withDockerRegistry([ credentialsId: 'docker-login', url: '' ]) {
-                        docker.image(DOCKER_IMAGE_NAME).push("${APP_VERSION}")
-                        docker.image(DOCKER_IMAGE_NAME).push('latest')
+                    withDockerRegistry([ credentialsId: 'docker-credentials', url: '' ]) {
+                        // Get a reference to the image that was just built (which has the APP_VERSION tag)
+                        def builtImage = docker.image("${DOCKER_IMAGE_NAME}:${APP_VERSION}")
+
+                        // Push the image with the APP_VERSION tag
+                        builtImage.push() // No need to specify tag again, it uses the one defined in 'builtImage'
+
+                        // Tag the *same built image* with "latest"
+                        builtImage.addTag('latest') // This creates a local 'latest' tag pointing to the same image ID
+
+                        // Push the image with the "latest" tag
+                        builtImage.push('latest') // Now push the 'latest' tag
                     }
                 }
             }
