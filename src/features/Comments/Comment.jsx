@@ -1,8 +1,10 @@
 import Story from "../Stories/Story";
+import moment from "moment-timezone";
 
 function Comment({ comment }) {
   const {
     comment: commentText,
+    createdAt,
     userId: { profilePicture, username },
   } = comment;
   return (
@@ -20,7 +22,9 @@ function Comment({ comment }) {
               "comment here comment here comment here comment here comment here comment here comment here"}
           </span>
         </div>
-        <p className="text-xl font-medium">2h</p>
+        <p className="text-xl font-medium">
+          {moment(createdAt).tz("Asia/Kolkata").format("DD-MM-YYYY hh:mm A")}
+        </p>
       </div>
     </div>
   );

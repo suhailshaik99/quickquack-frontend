@@ -20,6 +20,7 @@ function CommentsList() {
     dispatch(clearPostId());
     dispatch(closeCommentsListBox());
   }
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20 px-3 backdrop-blur-sm">
       <div className="relative h-[50rem] w-[50rem] rounded-xl bg-sky-100 p-3 sm:h-[60rem]">
