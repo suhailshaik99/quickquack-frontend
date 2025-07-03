@@ -57,7 +57,7 @@ pipeline {
             steps {
                 echo 'Tagging and pushing the image to Docker Hub...'
                 script {
-                    withDockerRegistry([ credentialsId: 'docker-credentials', url: '' ]) {
+                    withDockerRegistry([ credentialsId: 'docker-login', url: '' ]) {
                         // The image was built with the APP_VERSION tag, e.g., suhailshaik99/quickquack-frontend:v1.2.0
 
                         // 1. Push the image with the APP_VERSION tag first
