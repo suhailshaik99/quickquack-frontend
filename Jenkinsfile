@@ -57,7 +57,7 @@ pipeline {
             steps {
                 echo 'Tagging and pushing the image to Docker Hub...'
                 script {
-                    withDockerRegistry([ credentialsId: 'docker-credentials', url: '' ]) {
+                    withDockerRegistry([ credentialsId: 'docker-login', url: '' ]) {
                         docker.image(DOCKER_IMAGE_NAME).push("${APP_VERSION}")
                         docker.image(DOCKER_IMAGE_NAME).push('latest')
                     }
